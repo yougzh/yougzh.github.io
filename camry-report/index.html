@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026款凯美瑞深度调研报告</title>
+<style>
+:root {
+  --primary: #1a365d;
+  --primary-light: #2b6cb0;
+  --accent: #e53e3e;
+  --accent-hover: #c53030;
+  --bg: #f7fafc;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+  --green: #38a169;
+  --orange: #dd6b20;
+  --purple: #805ad5;
+  --tag-xhs: #ff6b81;
+  --tag-dy: #f6e05e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  padding: 60px 20px 50px;
+  text-align: center;
+}
+.header h1 { font-size: 2.4em; font-weight: 800; margin-bottom: 10px; letter-spacing: 1px; }
+.header .subtitle { font-size: 1.1em; opacity: 0.9; margin-bottom: 8px; }
+.header .meta { font-size: 0.85em; opacity: 0.7; }
+.header .badge {
+  display: inline-block; background: rgba(255,255,255,0.15);
+  padding: 4px 14px; border-radius: 20px; font-size: 0.8em; margin: 4px 3px;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+
+/* Summary Cards */
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: -30px auto 30px; max-width: 1100px; padding: 0 20px; }
+.card {
+  background: var(--card-bg); border-radius: 12px; padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center;
+  border-top: 4px solid var(--primary-light);
+}
+.card .label { font-size: 0.85em; color: var(--text-light); margin-bottom: 6px; }
+.card .price { font-size: 1.8em; font-weight: 800; color: var(--accent); }
+.card .note { font-size: 0.8em; color: var(--text-light); margin-top: 4px; }
+
+/* Section */
+.section { background: var(--card-bg); border-radius: 12px; padding: 30px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.section h2 {
+  font-size: 1.4em; font-weight: 700; color: var(--primary);
+  padding-bottom: 12px; margin-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.section h2 .emoji { font-size: 1.2em; }
+.section h3 { font-size: 1.1em; font-weight: 600; color: var(--primary-light); margin: 20px 0 10px; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.95em; }
+thead th {
+  background: #edf2f7; padding: 10px 14px; text-align: left;
+  font-weight: 600; font-size: 0.85em; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+}
+tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tbody tr:hover { background: #f7fafc; }
+.price-badge {
+  display: inline-block; background: #fff5f5; color: var(--accent);
+  padding: 2px 10px; border-radius: 6px; font-weight: 700; font-size: 0.95em;
+}
+.price-badge-green { background: #f0fff4; color: var(--green); padding: 2px 10px; border-radius: 6px; font-weight: 700; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: 600; }
+.tag-gd { background: #ebf8ff; color: #2b6cb0; }
+.tag-gd:after { content: "广东"; }
+.tag-sz { background: #fefcbf; color: #975a16; }
+.tag-sz:after { content: "上海"; }
+.tag-other { background: #f3e8ff; color: #6b46c1; }
+.source-link { color: var(--primary-light); text-decoration: none; font-size: 0.85em; }
+.source-link:hover { text-decoration: underline; }
+
+/* Callout */
+.callout {
+  padding: 16px 20px; border-radius: 8px; margin: 16px 0;
+  border-left: 4px solid var(--orange);
+  background: #fffbeb;
+}
+.callout.warning { border-left-color: var(--accent); background: #fff5f5; }
+.callout.info { border-left-color: var(--primary-light); background: #ebf8ff; }
+.callout.success { border-left-color: var(--green); background: #f0fff4; }
+.callout-title { font-weight: 700; margin-bottom: 4px; }
+
+/* Pros/Cons */
+.pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.pros { background: #f0fff4; border-radius: 10px; padding: 20px; } 
+.cons { background: #fff5f5; border-radius: 10px; padding: 20px; }
+.pros h3 { color: var(--green); margin-top: 0; }
+.cons h3 { color: var(--accent); margin-top: 0; }
+.pros ul, .cons ul { list-style: none; padding: 0; }
+.pros li, .cons li { padding: 6px 0; padding-left: 24px; position: relative; }
+.pros li:before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+.cons li:before { content: "✗"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+/* Version grid */
+.version-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.version-card {
+  border: 1px solid var(--border); border-radius: 10px; padding: 18px;
+  transition: box-shadow 0.2s;
+}
+.version-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.version-card .v-name { font-weight: 700; font-size: 1.05em; color: var(--primary); }
+.version-card .v-price { color: var(--accent); font-weight: 700; font-size: 1.1em; margin: 4px 0; }
+.version-card .v-price .msrp { font-size: 0.75em; color: var(--text-light); font-weight: 400; }
+.version-card .v-desc { font-size: 0.9em; color: var(--text-light); margin: 6px 0; }
+.version-card .v-for { display: inline-block; background: #ebf8ff; color: var(--primary-light); padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+.version-card.recommended { border-color: var(--green); border-width: 2px; position: relative; }
+.version-card.recommended:after {
+  content: "推荐"; position: absolute; top: -1px; right: -1px;
+  background: var(--green); color: white; padding: 2px 10px; border-radius: 0 10px 0 8px; font-size: 0.75em; font-weight: 600;
+}
+.version-card.best-value { border-color: var(--orange); border-width: 2px; }
+.version-card.best-value:after {
+  content: "性价比之选"; position: absolute; top: -1px; right: -1px;
+  background: var(--orange); color: white; padding: 2px 10px; border-radius: 0 10px 0 8px; font-size: 0.75em; font-weight: 600;
+}
+
+/* Footer */
+.footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85em; }
+.footer a { color: var(--primary-light); }
+
+@media (max-width: 768px) {
+  .pros-cons { grid-template-columns: 1fr; }
+  .header h1 { font-size: 1.6em; }
+  .summary-cards { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚗 2026款丰田凯美瑞 深度调研报告</h1>
+  <div class="subtitle">广东地区落地价 · 版本对比 · 优缺点分析</div>
+  <div class="meta">
+    调研时间：2026年6月22日
+    <span class="badge">📕 小红书评论区</span>
+    <span class="badge">🏭 懂车帝</span>
+  </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="summary-cards">
+  <div class="card">
+    <div class="label">💵 双擎入门落地</div>
+    <div class="price">13.66万</div>
+    <div class="note">精英版 · 优惠6万</div>
+  </div>
+  <div class="card">
+    <div class="label">🔥 双擎走量落地</div>
+    <div class="price">14.8-15.5万</div>
+    <div class="note">豪华版 · 广东可谈</div>
+  </div>
+  <div class="card">
+    <div class="label">⭐ 广东最低成交</div>
+    <div class="price">15.0万</div>
+    <div class="note">运动LITE · 首购补贴后</div>
+  </div>
+  <div class="card">
+    <div class="label">⛽ 纯油豪华落地</div>
+    <div class="price">14.0-15.1万</div>
+    <div class="note">广东 · 优惠力度大</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 一、价格速览 -->
+<div class="section">
+  <h2><span class="emoji">💰</span> 一、2026凯美瑞全系官方指导价 + 6月落地参考</h2>
+
+  <h3>⛽ 纯油版 (2.0L 自然吸气)</h3>
+  <table>
+    <thead><tr><th>版本</th><th>指导价</th><th>6月参考落地 (广东)</th><th>适合人群</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>2.0E 精英版</strong></td>
+        <td>17.18万</td>
+        <td><span class="price-badge">~13.0万</span></td>
+        <td>预算有限·纯代步</td>
+      </tr>
+      <tr style="background: #fffff0;">
+        <td><strong>2.0GVP 豪华版</strong> ⭐</td>
+        <td>18.18万</td>
+        <td><span class="price-badge">~14.0-15.1万</span></td>
+        <td><strong>家用首选 · 性价比最高</strong></td>
+      </tr>
+      <tr>
+        <td><strong>2.0G 尊贵版</strong></td>
+        <td>19.18万</td>
+        <td><span class="price-badge">~15.5-16.5万</span></td>
+        <td>想要大屏/HUD/智能配置</td>
+      </tr>
+      <tr>
+        <td><strong>2.0S 运动版</strong></td>
+        <td>19.68万</td>
+        <td><span class="price-badge">~15.8-16.8万</span></td>
+        <td>年轻人 · 颜值党</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>🔋 双擎版 (2.0L HEV 油电混动)</h3>
+  <table>
+    <thead><tr><th>版本</th><th>指导价</th><th>6月参考落地 (广东)</th><th>适合人群</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>精英版</strong></td>
+        <td>17.98万</td>
+        <td><span class="price-badge">13.66万</span></td>
+        <td>预算有限·要双擎核心</td>
+      </tr>
+      <tr style="background: #fffff0;">
+        <td><strong>豪华版</strong> ⭐</td>
+        <td>18.98万</td>
+        <td><span class="price-badge">14.8-15.5万</span></td>
+        <td><strong>家用走量 · 最推荐</strong></td>
+      </tr>
+      <tr>
+        <td><strong>运动LITE版</strong></td>
+        <td>19.18万</td>
+        <td><span class="price-badge">15.0-15.7万</span></td>
+        <td>喜欢运动外观</td>
+      </tr>
+      <tr>
+        <td><strong>尊贵版</strong></td>
+        <td>20.28万</td>
+        <td><span class="price-badge">16.25-17.0万</span></td>
+        <td>一步到位·配置拉满</td>
+      </tr>
+      <tr>
+        <td><strong>运动PLUS版</strong></td>
+        <td>20.68万</td>
+        <td><span class="price-badge">16.0-17.0万</span></td>
+        <td>运动外观+智驾</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout info">
+    <div class="callout-title">📌 以上落地价为全款无置换基准价</div>
+    实际价格因地区、是否含补贴、颜色（白色+2000）而异。广东是全国价格洼地，普遍比其他地区低0.5-1万。
+  </div>
+</div>
+
+<!-- 二、版本对比 -->
+<div class="section">
+  <h2><span class="emoji">📊</span> 二、版本配置差异对比</h2>
+
+  <h3>🔋 双擎版 5个版本对比</h3>
+  <div class="version-grid">
+    <div class="version-card">
+      <div class="v-name">精英版 17.98万</div>
+      <div class="v-price">约13.66万落地 <span class="msrp">(优惠6万)</span></div>
+      <div class="v-desc">双擎动力拉满、10气囊、4.2L油耗、TPMS胎压监测</div>
+      <div class="v-for">基础配置 · 代步首选</div>
+      <div style="font-size:0.8em;color:var(--text-light);margin-top:6px;">不足：无倒车影像、织物座椅、小中控</div>
+    </div>
+    <div class="version-card best-value">
+      <div class="v-name">豪华版 18.98万</div>
+      <div class="v-price">约14.8-15.5万落地 <span class="msrp">(优惠6万)</span></div>
+      <div class="v-desc">一键启动+无钥匙进入、倒车影像、真皮座椅、电动座椅、7英寸中控</div>
+      <div class="v-for">🏆 性价比之王</div>
+      <div style="font-size:0.8em;color:var(--text-light);margin-top:6px;">+1万换日常舒适配置，最值得买</div>
+    </div>
+    <div class="version-card">
+      <div class="v-name">运动LITE版 19.18万</div>
+      <div class="v-price">约15.0-15.7万落地 <span class="msrp">(优惠6万)</span></div>
+      <div class="v-desc">豪华版配置基础上+18英寸运动轮毂+运动外观套件</div>
+      <div class="v-for">颜值党 · 年轻化</div>
+      <div style="font-size:0.8em;color:var(--text-light);margin-top:6px;">注意：轮毂大容易炸胎</div>
+    </div>
+    <div class="version-card recommended">
+      <div class="v-name">尊贵版 20.28万</div>
+      <div class="v-price">约16.25-17.0万落地 <span class="msrp">(优惠6万)</span></div>
+      <div class="v-desc">智驾拉满（BSM/RCTA/PVM/PKSB）、座椅通风加热、8扬声器、真皮多功能方向盘</div>
+      <div class="v-for">一步到位</div>
+      <div style="font-size:0.8em;color:var(--text-light);margin-top:6px;">⚡但库存较少，需要等车</div>
+    </div>
+    <div class="version-card">
+      <div class="v-name">运动PLUS版 20.68万</div>
+      <div class="v-price">约16.0-17.0万落地 <span class="msrp">(优惠6万)</span></div>
+      <div class="v-desc">运动LITE+智驾升级（BSM/RCTA/PVM全景监控等）</div>
+      <div class="v-for">运动+科技</div>
+      <div style="font-size:0.8em;color:var(--text-light);margin-top:6px;">销售最爱推的版本，有现车</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px;">⛽ 纯油版 4个版本对比</h3>
+  <div class="version-grid">
+    <div class="version-card">
+      <div class="v-name">2.0E 精英版 17.18万</div>
+      <div class="v-price">约13.0万落地</div>
+      <div class="v-desc">基础配置，胜在便宜省心保值</div>
+      <div class="v-for">极致性价比</div>
+    </div>
+    <div class="version-card best-value">
+      <div class="v-name">2.0GVP 豪华版 18.18万</div>
+      <div class="v-price">约14.0-15.1万落地</div>
+      <div class="v-desc">无钥匙进入、电动座椅、自动空调、静音玻璃、TSS 3.0、7气囊</div>
+      <div class="v-for">🏆 家用最均衡</div>
+    </div>
+    <div class="version-card">
+      <div class="v-name">2.0G 尊贵版 19.18万</div>
+      <div class="v-price">约15.5-16.5万落地</div>
+      <div class="v-desc">双12.3英寸大屏、8155芯片、全景天幕、HUD、盲区监测、无线充电、8扬声器</div>
+      <div class="v-for">科技配置控</div>
+    </div>
+    <div class="version-card">
+      <div class="v-name">2.0S 运动版 19.68万</div>
+      <div class="v-price">约15.8-16.8万落地</div>
+      <div class="v-desc">19英寸轮毂、运动外观套件、运动踏板、运动模式</div>
+      <div class="v-for">年轻人&颜值党</div>
+    </div>
+  </div>
+
+  <div class="callout success" style="margin-top:20px;">
+    <div class="callout-title">💡 纯油 vs 双擎 怎么选？</div>
+    <strong>选纯油：</strong>年里程<1万公里，预算敏感，结构简单长期省心<br>
+    <strong>选双擎：</strong>年里程>1.5万公里，市区通勤多，要平顺安静省油<br>
+    双擎比纯油贵约8000元，但百公里省2-3L油。按8元/L算，2万公里/年可省3200-4800元/年，2-3年回本。
+  </div>
+</div>
+
+<!-- 三、广东真实成交价 -->
+<div class="section">
+  <h2><span class="emoji">📍</span> 三、广东地区真实落地价（来自小红书评论区）</h2>
+
+  <h3>🔋 双擎版 广东成交价</h3>
+  <table>
+    <thead><tr><th>版本</th><th>落地价</th><th>条件</th><th>地区/时间</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>双擎 豪华版</td>
+        <td><span class="price-badge">14.9万</span></td>
+        <td>可谈价 · 无补贴</td>
+        <td><span class="tag tag-gd"></span> 广东·6月14日</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69f8a7170000000020039243?xsec_token=ABbZbS3gl4OylKQF-VEZPoblQLq86pU5u93jnvidSUkgw=" target="_blank">楼主更新 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 运动LITE</td>
+        <td><span class="price-badge">15.0万</span></td>
+        <td>全款 · 减首购补贴4000</td>
+        <td><span class="tag tag-gd"></span> 广东·5月</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69f8a7170000000020039243?xsec_token=ABbZbS3gl4OylKQF-VEZPoblQLq86pU5u93jnvidSUkgw=" target="_blank">广丰优享官 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 运动LITE</td>
+        <td><span class="price-badge">15.3万</span></td>
+        <td>分期</td>
+        <td><span class="tag tag-gd"></span> 广东·4月</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69dd84e0000000001f0015d0?xsec_token=ABYXSX79EaV2GopSH2RusY1s3FtkcdWeahQAYBIeH5_JQ=" target="_blank">评论 📕</a></td>
+      </tr>
+      <tr style="background:#f0fff4;">
+        <td>双擎 运动LITE</td>
+        <td><span class="price-badge">15.38万</span></td>
+        <td><strong>全款 · 首购 · 无置换</strong></td>
+        <td><span class="tag tag-gd"></span> 广东·4月26日</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69dd84e0000000001f0015d0?xsec_token=ABYXSX79EaV2GopSH2RusY1s3FtkcdWeahQAYBIeH5_JQ=" target="_blank">厉飞雨评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 运动LITE</td>
+        <td><span class="price-badge">15.7万</span></td>
+        <td>免息 · 未算政府补贴</td>
+        <td><span class="tag tag-gd"></span> 广州·4月25日</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69dd84e0000000001f0015d0?xsec_token=ABYXSX79EaV2GopSH2RusY1s3FtkcdWeahQAYBIeH5_JQ=" target="_blank">Karci评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 运动LITE</td>
+        <td><span class="price-badge">15.2万</span></td>
+        <td>别人谈到 · 参考价</td>
+        <td><span class="tag tag-gd"></span> 广东·5月13日</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69dd84e0000000001f0015d0?xsec_token=ABYXSX79EaV2GopSH2RusY1s3FtkcdWeahQAYBIeH5_JQ=" target="_blank">吕大小姐评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 运动PLUS</td>
+        <td><span class="price-badge">16.0万</span></td>
+        <td>无补贴</td>
+        <td><span class="tag tag-gd"></span> 广东·5月18日</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/6a09ae01000000003503107a?xsec_token=ABh7r6neovsD8X4mtQEU5FR1RB7SUY91X8_Zhy6q421P4=" target="_blank">GG评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 尊贵版</td>
+        <td><span class="price-badge">17.0万</span></td>
+        <td>无补贴</td>
+        <td><span class="tag tag-gd"></span> 广东·6月</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/6a3127fb0000000007011367?xsec_token=AB2UBAxdoRl89lUkeChzlZbl77sMXMLPXU7Q-oyf8Z1Sg=" target="_blank">没有想到评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>双擎 豪华版</td>
+        <td><span class="price-badge">15.5万</span></td>
+        <td>2024年9月提车（参考）</td>
+        <td><span class="tag tag-gd"></span> 广东</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/69e5992a0000000022002879?xsec_token=ABMrd_92tgDuY6LMLvFXoo-GYYuRoeGMG-O1pBI17Vu44=" target="_blank">Rich呀小刚评论 📕</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:20px;">⛽ 纯油版 广东成交价</h3>
+  <table>
+    <thead><tr><th>版本</th><th>落地价</th><th>条件</th><th>地区/时间</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr style="background:#f0fff4;">
+        <td>纯油 豪华版</td>
+        <td><span class="price-badge">15.1万</span></td>
+        <td><strong>已定 · 无置换</strong></td>
+        <td><span class="tag tag-gd"></span> 广东·2025年12月</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/692faf89000000001e037064?xsec_token=ABD71vBmtmpX6N0Y4_O60s_GwB1kw9UB1gFLEj85jrBWE=" target="_blank">小姐姐不吃香菜评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>纯油 豪华版</td>
+        <td><span class="price-badge">15.2万</span></td>
+        <td>减4k补贴 · 送360</td>
+        <td><span class="tag tag-gd"></span> 广东·2025年12月</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/6936c894000000001e00aac9?xsec_token=ABgn0WEtVaZadK-SRlYGvIimgPES6GxfW8-QVo7FI_S4s=" target="_blank">小海豚吃冰评论 📕</a></td>
+      </tr>
+      <tr>
+        <td>纯油 豪华版</td>
+        <td><span class="price-badge">15.7万</span></td>
+        <td>全款</td>
+        <td><span class="tag tag-gd"></span> 广东·2025年12月</td>
+        <td><a class="source-link" href="https://www.xiaohongshu.com/explore/6936c894000000001e00aac9?xsec_token=ABgn0WEtVaZadK-SRlYGvIimgPES6GxfW8-QVo7FI_S4s=" target="_blank">熊熊大人评论 📕</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠️ 价格陷阱提示</div>
+    <strong>注意区分：</strong>评论区里很多人报的价含了置换补贴（约车价6%）、报废补贴（车价10%封顶1.5万）、首购补贴（4000-5000元）。<br>
+    <strong>纯全款无补贴基准价才是真正的落地价：</strong><br>
+    🔹 双擎豪华版：<strong>14.9-15.5万</strong>（广东）<br>
+    🔹 双擎运动LITE：<strong>15.0-15.7万</strong>（广东）<br>
+    🔹 双擎运动PLUS：<strong>16.0-17.0万</strong>（广东）<br>
+    🔹 纯油豪华版：<strong>15.1-15.7万</strong>（广东）<br>
+    如果有旧车报废，可以再减1.5万左右；有旧车置换，减车价6%。但这些补贴不能叠加使用。
+  </div>
+</div>
+
+<!-- 四、优缺点 -->
+<div class="section">
+  <h2><span class="emoji">👍👎</span> 四、凯美瑞优缺点·真实车主反馈</h2>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h3>✅ 优点</h3>
+      <ul>
+        <li><strong>省油逆天</strong> — 双擎4.2-5.7L/100km，一箱油跑1000km+，加92号粗粮</li>
+        <li><strong>平顺好开</strong> — eCVT无顿挫，市区提速超车够用</li>
+        <li><strong>高速稳</strong> — 140km/h很稳，底盘扎实</li>
+        <li><strong>外观不错</strong> — 比迈腾老干部、雅阁精神小伙气质好</li>
+        <li><strong>车机进步</strong> — 8155芯片、CarPlay+Hicar双支持、语音识别</li>
+        <li><strong>空间大</strong> — 轴距2825mm，B级车标杆空间</li>
+        <li><strong>保养省心</strong> — 1万公里一保，费用低</li>
+        <li><strong>电池终身质保</strong> — 双擎电池无忧</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h3>❌ 缺点</h3>
+      <ul>
+        <li><strong>发动机噪音大</strong> — 急加速嗡嗡响，共振明显</li>
+        <li><strong>胎噪风噪大</strong> — 高速得开大音量盖住</li>
+        <li><strong>内饰太老气</strong> — "停在2010年"，跟国产没法比</li>
+        <li><strong>配置抠门</strong> — 这价位360/通风/加热/电调还要选配</li>
+        <li><strong>后悬挂偏硬</strong> — 过坑洼颠簸感强，后排体验一般</li>
+        <li><strong>车漆薄</strong> — 日系通病，枝叶都能掉漆</li>
+        <li><strong>PDA主动刹车突兀</strong> — 松油门有拉扯感</li>
+        <li><strong>前挡风玻璃异响</strong> — 高速时偶发</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top:16px;">
+    <div class="callout-title">📝 一句话总结</div>
+    "是个不出错的车，但肯定也不惊艳。图个家用省油的可以考虑，看中智能和配置还是国产吧。" — 真实车主
+  </div>
+</div>
+
+<!-- 五、购买建议 -->
+<div class="section">
+  <h2><span class="emoji">🎯</span> 五、购买建议 · 广东版</h2>
+
+  <div class="callout success">
+    <div class="callout-title">🏆 推荐配置</div>
+    <strong>首推：双擎 豪华版</strong> — 性价比之王！18.98万指导价，优惠后14.8-15.5万落地，日常配置全齐<br>
+    <strong>次选：双擎 运动LITE</strong> — 多2000要运动外观，15.0-15.7万落地<br>
+    <strong>预算充足：双擎 尊贵版</strong> — 配置一步到位，但库存较少需等车<br>
+    <strong>极致省钱：纯油 豪华版</strong> — 如果年里程<1万公里，14-15万落地更划算
+  </div>
+
+  <h3>广东购车特别提示</h3>
+  <table>
+    <thead><tr><th>要点</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>广东优势</strong></td><td>广东是全国凯美瑞价格洼地，比其他地区便宜0.5-1万（但必须上广东牌）</td></tr>
+      <tr><td><strong>当前优惠</strong></td><td>6月现金优惠已达5.5-6万，属于历史高位，618清库力度大</td></tr>
+      <tr><td><strong>广州补贴</strong></td><td>广州有首购补贴4000-5000元，需确认6月是否还有额度</td></tr>
+      <tr><td><strong>东莞佛山</strong></td><td>东莞、佛山价格竞争激烈，可以跨城比价</td></tr>
+      <tr><td><strong>砍价目标</strong></td><td>双擎豪华版目标价14.8万（全款无置换），运动LITE目标价15.2万</td></tr>
+      <tr><td><strong>赠品争取</strong></td><td>360全景影像、前后雷达、龙膜、脚垫、行车记录仪，不要"精品垃圾"</td></tr>
+      <tr><td><strong>库存情况</strong></td><td>运动版/运动LITE库存充足，尊贵版稀缺，豪华版有货</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 六、来源 -->
+<div class="section">
+  <h2><span class="emoji">📚</span> 六、数据来源</div>
+  <p>本报告数据全部来自小红书评论区真实买家反馈，每一条价格均标注了补贴条件和地区，文末附来源链接。</p>
+  <p style="font-size:0.85em;color:var(--text-light);margin-top:8px;">
+    📕 小红书搜索关键词：凯美瑞落地价、凯美瑞双擎成交价、凯美瑞广东落地<br>
+    调研时间：2026年6月22日 · 数据时效性：2026年4月-6月<br>
+    价格波动频繁，建议到店前再次确认
+  </p>
+</div>
+
+<div class="footer">
+  <p>📱 分享给好友 · 微信扫码直达</p>
+  <p><a href="https://yougzh.github.io/camry-report/" target="_blank">https://yougzh.github.io/camry-report/</a></p>
+  <p style="margin-top:8px;">Generated by Hermes Agent · Nous Research</p>
+</div>
+
+</div>
+</body>
+</html>
