@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>车市调研 | 7-15万 油车 &amp; 双擎 2026年6月</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --primary-light: #2b6cb0;
+    --accent: #e53e3e;
+    --accent-green: #38a169;
+    --accent-orange: #dd6b20;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #2d3748;
+    --text-light: #718096;
+    --price-bg: #fff5f5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #2c5282 100%);
+    color: white;
+    padding: 48px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .subtitle {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.85;
+    position: relative;
+    z-index: 1;
+  }
+  .header .meta {
+    margin-top: 16px;
+    font-size: 13px;
+    opacity: 0.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Summary banner */
+  .summary-banner {
+    background: linear-gradient(135deg, #ebf8ff, #e0edff);
+    border: 1px solid #bee3f8;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: -24px auto 32px;
+    position: relative;
+    z-index: 2;
+    max-width: 920px;
+  }
+  .summary-banner h2 {
+    font-size: 16px;
+    color: var(--primary);
+    margin-bottom: 14px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .summary-item {
+    background: white;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    border-left: 3px solid var(--primary-light);
+  }
+  .summary-item .car-name {
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .summary-item .price {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .summary-item .note {
+    color: var(--text-light);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .summary-item a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-size: 12px;
+  }
+  .summary-item a:hover {
+    text-decoration: underline;
+  }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .section h2 {
+    font-size: 20px;
+    color: var(--primary);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section h2 .emoji { margin-right: 6px; }
+
+  .section h3 {
+    font-size: 17px;
+    color: var(--primary-light);
+    margin: 24px 0 12px;
+  }
+  .section h4 {
+    font-size: 15px;
+    color: var(--text);
+    margin: 20px 0 10px;
+    font-weight: 600;
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 12px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 600px;
+  }
+  thead {
+    background: #edf2f7;
+  }
+  th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary);
+    white-space: nowrap;
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: #f7fafc; }
+
+  .price-highlight {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .price-badge {
+    display: inline-block;
+    background: var(--price-bg);
+    color: var(--accent);
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  .tag-hev {
+    display: inline-block;
+    background: #e6fffa;
+    color: #234e52;
+    font-size: 11px;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .tag-phev {
+    display: inline-block;
+    background: #fefcbf;
+    color: #744210;
+    font-size: 11px;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  /* Callout / Alert */
+  .callout {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .callout-success {
+    background: #f0fff4;
+    border-left: 4px solid var(--accent-green);
+    color: #22543d;
+  }
+  .callout-warning {
+    background: #fffaf0;
+    border-left: 4px solid var(--accent-orange);
+    color: #7b341e;
+  }
+  .callout-info {
+    background: #ebf8ff;
+    border-left: 4px solid var(--primary-light);
+    color: #2a4365;
+  }
+  .callout-danger {
+    background: #fff5f5;
+    border-left: 4px solid var(--accent);
+    color: #9b2c2c;
+  }
+
+  .callout a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  /* Link style */
+  a {
+    color: var(--primary-light);
+    text-decoration: none;
+  }
+  a:hover { text-decoration: underline; }
+  .link-btn {
+    display: inline-block;
+    background: #ebf8ff;
+    color: var(--primary-light);
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .link-btn:hover {
+    background: #bee3f8;
+    text-decoration: none;
+  }
+
+  /* Trap card */
+  .trap-card {
+    background: linear-gradient(135deg, #fff5f5, #ffeef0);
+    border: 1px solid #fed7d7;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 16px 0;
+  }
+  .trap-card h4 {
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  .trap-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .trap-card li {
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(229,62,62,0.1);
+  }
+  .trap-card li:last-child { border-bottom: none; }
+  .trap-card li::before {
+    content: '⚠️ ';
+    margin-right: 4px;
+  }
+
+  /* Tip list */
+  .tip-list {
+    list-style: none;
+    padding: 0;
+  }
+  .tip-list li {
+    padding: 10px 14px 10px 36px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tip-list li:last-child { border-bottom: none; }
+  .tip-list li::before {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+  }
+  .tip-list li:nth-child(1)::before { content: '📅'; }
+  .tip-list li:nth-child(2)::before { content: '💰'; }
+  .tip-list li:nth-child(3)::before { content: '🏪'; }
+  .tip-list li:nth-child(4)::before { content: '💬'; }
+  .tip-list li:nth-child(5)::before { content: '🎁'; }
+
+  /* Horizontal rule in section */
+  .section hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0 48px;
+    color: var(--text-light);
+    font-size: 13px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header h1 { font-size: 22px; }
+    .section { padding: 20px 16px; }
+    .summary-banner { padding: 16px; }
+    .summary-grid { grid-template-columns: 1fr; }
+    table { font-size: 13px; min-width: auto; }
+    th, td { padding: 8px 10px; }
+  }
+
+  /* Score badge */
+  .badge-gold {
+    display: inline-block;
+    background: linear-gradient(135deg, #f6e05e, #ecc94b);
+    color: #744210;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 4px;
+  }
+  .badge-red {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>🚗 车市调研报告</h1>
+    <div class="subtitle">落地价 7-15 万 · 油车 &amp; 双擎/混动 · 小车 &amp; SUV</div>
+    <div class="meta">📅 2026 年 6 月 &nbsp;·&nbsp; 📍 来源：小红书社区笔记 + 评论区真实成交价</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Summary Banner -->
+<div class="summary-banner">
+  <h2>🏆 6 款最受关注车型 · 真实买家落地价速览</h2>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="car-name">日产 · 经典轩逸</div>
+      <div class="price">6.7-7.2 万</div>
+      <div class="note">全款无置换 · 代步省油王</div>
+      <a href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">查看评论区 →</a>
+    </div>
+    <div class="summary-item">
+      <div class="car-name">大众 · 朗逸五百万版</div>
+      <div class="price">8.6-9.0 万</div>
+      <div class="note">全款无置换 · 德系品质</div>
+      <a href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">查看评论区 →</a>
+    </div>
+    <div class="summary-item">
+      <div class="car-name">丰田 · 锋兰达 2.0L 舒适</div>
+      <div class="price">9.5-10 万 <span style="font-size:11px;color:#dd6b20;">⚠️部分含补贴</span></div>
+      <div class="note">合资 SUV · 省油保值</div>
+      <a href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">查看评论区 →</a>
+    </div>
+    <div class="summary-item">
+      <div class="car-name">丰田 · 卡罗拉锐放 纯油</div>
+      <div class="price">10.3-11.1 万</div>
+      <div class="note">合资 SUV · 好停车家用</div>
+      <a href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">查看评论区 →</a>
+    </div>
+    <div class="summary-item">
+      <div class="car-name">丰田 · 锋兰达双擎</div>
+      <div class="price">~12 万</div>
+      <div class="note">真双擎 · 不用充电 · 低油耗</div>
+      <a href="https://www.xiaohongshu.com/discovery/item/69d377290000000021012ccb" target="_blank">查看评论区 →</a>
+    </div>
+    <div class="summary-item">
+      <div class="car-name">丰田 · 凯美瑞双擎 精英</div>
+      <div class="price">~12.78 万 <span style="font-size:11px;color:#dd6b20;">⚠️含置换？未确认</span></div>
+      <div class="note">B 级车 · 双擎低油耗</div>
+      <a href="https://www.xiaohongshu.com/discovery/item/69fa8bc20000000035031669" target="_blank">查看评论区 →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Section 1: 7-10 万 -->
+<div class="section">
+  <h2><span class="emoji">一</span> 7-10 万档次</h2>
+
+  <h3>🚗 油车 · 轿车</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>标题价参考</th><th>评论区真实成交价</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>日产轩逸</strong>（经典款）</td>
+          <td>6.59 万起</td>
+          <td><span class="price-badge">6.7-7.2 万</span>（全款无置换）</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">查看</a></td>
+        </tr>
+        <tr>
+          <td><strong>大众朗逸</strong>（五百万版 1.5L）</td>
+          <td>8.58 万起</td>
+          <td><span class="price-badge">8.58-9.0 万</span>（全款无置换）</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">查看</a></td>
+        </tr>
+        <tr>
+          <td><strong>大众速腾</strong> 300TSI</td>
+          <td>9.8 万左右</td>
+          <td>—</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69e829fc0000000022028138" target="_blank">原帖</a></td>
+        </tr>
+        <tr>
+          <td><strong>长安逸动</strong> 1.5T</td>
+          <td>6 万+</td>
+          <td>—</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69e4240d000000002003b229" target="_blank">原帖</a></td>
+        </tr>
+        <tr>
+          <td><strong>吉利帝豪</strong></td>
+          <td>7-8 万</td>
+          <td>—</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a39085d000000001101f3d2" target="_blank">原帖</a></td>
+        </tr>
+        <tr>
+          <td><strong>艾瑞泽 8</strong> 1.6T</td>
+          <td>9 万+</td>
+          <td>—</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a3544ef0000000017029983" target="_blank">原帖</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>💬 经典轩逸 · 评论区真实成交价详情</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>广东（同事价）</td><td><span class="price-badge">6.7 万</span></td><td>全款</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">评论 #9</a></td></tr>
+        <tr><td>佛山</td><td><span class="price-badge">6.9 万</span></td><td>全包落地</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">评论 #7</a></td></tr>
+        <tr><td>江西</td><td><span class="price-badge">6.9 万</span></td><td>含屏幕 + 360</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">评论 #1</a></td></tr>
+        <tr><td>山东</td><td><span class="price-badge">6.9 万</span></td><td>全款落地</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">评论 #1</a></td></tr>
+        <tr><td>南昌</td><td>7.2 万</td><td>谈到的最低</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">评论 #8</a></td></tr>
+        <tr><td>山东</td><td>7.8 万</td><td>相对较贵</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a296cdc00000000060366e3" target="_blank">评论 #10</a></td></tr>
+        <tr><td>江苏</td><td>~7.1 万</td><td>捆绑服务费</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a388cc5000000001102fb2a" target="_blank">笔记正文</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-success">
+    ✅ <strong>经典轩逸 2026 年 6 月真实全款落地价约 6.7-7.2 万</strong>，<strong>未含</strong>国补/省补/置换补贴。较去年 9.5 万降了约 3 万。
+  </div>
+
+  <h4>💬 朗逸五百万版 1.5L · 评论区真实成交价详情</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>吉林</td><td><span class="price-badge">8.58 万</span></td><td>全款无置换，不捆绑商业险</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">评论 #17</a></td></tr>
+        <tr><td>山东</td><td><span class="price-badge">8.75 万</span></td><td>全款，4 月底提</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">评论 #2</a></td></tr>
+        <tr><td>江苏</td><td><span class="price-badge">8.88 万</span></td><td>送 4 次保养 + 记录仪</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">评论 #4</a></td></tr>
+        <tr><td>河南</td><td><span class="price-badge">8.9 万</span></td><td>全款无置换，刚提</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">评论 #1</a></td></tr>
+        <tr><td>山东</td><td>8.9 万</td><td>全款</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">评论 #18</a></td></tr>
+        <tr><td>湖北</td><td>9.5 万</td><td>全款无置换</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a22dfb30000000021019cca" target="_blank">评论 #15</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-success">
+    ✅ <strong>朗逸 2026 年真实落地价约 8.6-9.0 万</strong>，较去年同期降了约 1 万。
+  </div>
+
+  <hr>
+
+  <h3>🚙 油车 · SUV（7-10 万）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>终端报价区间</th><th>级别</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>吉利缤越 1.5T</td><td>6.78-9.38 万</td><td>小型 SUV</td></tr>
+        <tr><td>哈弗 M6 1.5T</td><td>6.19-8.29 万</td><td>紧凑型 SUV</td></tr>
+        <tr><td>长安 CS35 PLUS 1.4T</td><td>6.99-8.19 万</td><td>小型 SUV</td></tr>
+        <tr><td>传祺 GS3 1.5T</td><td>7.08-9.68 万</td><td>小型 SUV</td></tr>
+        <tr><td>欧尚 X5 PLUS 1.5T</td><td>7.19-9.69 万</td><td>紧凑型 SUV</td></tr>
+        <tr><td>奇瑞瑞虎 7 1.5T</td><td>7.09 万起</td><td>紧凑型 SUV</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info">
+    📌 来源：<a href="https://www.xiaohongshu.com/discovery/item/69f96c8c000000001002d000" target="_blank">晚晚车生活 10 万落地 SUV 推荐</a>，此帖评论无具体成交价分享，多为车型询问。
+  </div>
+
+  <hr>
+
+  <h3>⚡ 双擎/混动 · 轿车（7-10 万）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>终端报价</th><th>类型</th><th>亏电油耗</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>比亚迪秦 PLUS DM-i</strong></td><td>7.98-12.58 万</td><td><span class="tag-phev">插混 PHEV</span></td><td>4.5L</td></tr>
+        <tr><td><strong>比亚迪驱逐舰 05</strong></td><td>7.98-12.88 万</td><td><span class="tag-phev">插混 PHEV</span></td><td>4.5L</td></tr>
+        <tr><td><strong>长安启源 A05</strong></td><td>7.89-11.09 万</td><td><span class="tag-phev">插混 PHEV</span></td><td>4.5L</td></tr>
+        <tr><td><strong>五菱星光 PHEV</strong></td><td>8.88-9.98 万</td><td><span class="tag-phev">插混 PHEV</span></td><td>4.1L</td></tr>
+        <tr><td><strong>帝豪 L HiP</strong></td><td>8.98-9.98 万</td><td><span class="tag-phev">插混 PHEV</span></td><td>4.1L</td></tr>
+        <tr><td><strong>丰田卡罗拉双擎</strong></td><td>7 万+</td><td><span class="tag-hev">油混 HEV ★</span></td><td>4.0L</td></tr>
+        <tr><td><strong>丰田雷凌双擎</strong></td><td>7.78 万起</td><td><span class="tag-hev">油混 HEV ★</span></td><td>4.2L</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info">
+    📌 来源：<a href="https://www.xiaohongshu.com/discovery/item/69fac861000000000f03ac00" target="_blank">晴晴自驾手册 10 万内混动横评</a><br>
+    💡 <span class="tag-hev">油混 HEV ★</span> = 真"双擎"，不用充电；<span class="tag-phev">插混 PHEV</span> = 可充电
+  </div>
+
+  <h4>💬 卡罗拉双擎 · 评论区成交价</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>安徽</td><td>11.3 万</td><td>2024 款双擎精英，全款</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6778f8130000000009016540" target="_blank">评论 #11</a></td></tr>
+        <tr><td>广东</td><td>10.3 万</td><td>2024 款双擎精英，2024 年买</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/699c1a5c000000001a02ca6f" target="_blank">评论 #6</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-warning">
+    ⚠️ 这两个都是 <strong>2024 年的价格</strong>。2026 年卡罗拉双擎应该有更低的价，但小红书近期没有买家分享具体成交价，建议到店询价。
+  </div>
+
+  <hr>
+
+  <h3>⚡ 双擎/混动 · SUV（7-10 万）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>终端报价</th><th>类型</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>长安启源 Q05</strong> PHEV</td><td>6.39-7.99 万</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>银河星舰 7</strong> EM-i</td><td>8.98-12.28 万</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>比亚迪宋 Pro DM</strong></td><td>9.28-12.28 万</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>海狮 05 DM</strong></td><td>8.98-13.28 万</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>长安 UNI-Z PHEV</strong></td><td>9.99-11.69 万</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>奇瑞风云 T8</strong></td><td>9.99-14.69 万</td><td><span class="tag-phev">插混</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info">
+    📌 来源：<a href="https://www.xiaohongshu.com/discovery/item/68177c7c000000002001f02a" target="_blank">四驱同学 10 万混动 SUV 帖</a>（1011 赞）
+  </div>
+</div>
+
+<!-- Section 2: 10-15 万 -->
+<div class="section">
+  <h2><span class="emoji">二</span> 10-15 万档次</h2>
+
+  <h3>🚗 油车 · 轿车</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>参考落地价</th><th>说明</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>大众速腾</strong> 300TSI</td><td>10 万+</td><td>过去 15 万，现在性价比顶</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a2bf5410000000035020d40" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>别克君威</strong></td><td>全款约 11 万</td><td>B 级车价格屠夫</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69567e5f000000001e036684" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>斯柯达速派</strong> 1.4T</td><td>10-11 万</td><td>德系 B 级，裸车已进 10 万</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69567e5f000000001e036684" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>雅阁</strong> 1.5T 豪华</td><td>不到 15 万</td><td>包牌包税车低配仅 11 万+</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a2bf5410000000035020d40" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>日产天籁</strong> 鸿蒙座舱</td><td>不到 14 万</td><td>油车 + 华为车机</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a2bf5410000000035020d40" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>大众帕萨特</strong> 280</td><td>15 万+</td><td>商务首选，保值率高</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a1d597900000000070205c1" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>大众迈腾</strong> 380TSI 豪华</td><td>16 万左右</td><td>前几年 20 万+，现在真降了</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a2bf5410000000035020d40" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>红旗 H5</strong></td><td>10 万+出头</td><td>近 5 米车长</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a38b3c1000000000702e704" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>沃尔沃 S60</strong> 豪华版</td><td>16.5 万</td><td>安全标杆</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a2bf5410000000035020d40" target="_blank">原帖</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h3>🚙 油车 · SUV（10-15 万）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>参考落地价</th><th>说明</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>丰田锋兰达</strong> 2.0L 舒适</td><td><span class="price-badge">9.5-10 万</span></td><td>合资省油王，详见评论区</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">报价单帖</a></td></tr>
+        <tr><td><strong>卡罗拉锐放</strong> 纯油</td><td><span class="price-badge">10.3-11.1 万</span></td><td>详见评论区</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">报价单帖</a></td></tr>
+        <tr><td><strong>丰田 RAV4 荣放</strong></td><td>13 万+</td><td>常年销冠，评论区 13 万+ 落地</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a32252c0000000006037459" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>大众探岳</strong> 300TSI</td><td>13 万+</td><td>跌至 12 万后销量猛增</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6871b5130000000011000398" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>大众途岳</strong></td><td>12 万+</td><td>油耗仅 5.99L</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/681db8a50000000022036f54" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>吉利星越 L</strong></td><td>13.7-15 万</td><td>国产销量王，半年 9 万+ 台</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/68f74ac90000000007022216" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>奇瑞瑞虎 9</strong></td><td>10-15 万</td><td>大五座超舒适</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/68f74ac90000000007022216" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>哈弗大狗</strong> 边牧版</td><td>10 万</td><td>方盒子造型</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a2bf5410000000035020d40" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>马自达 CX-5</strong> 2.0L</td><td>11-12 万+</td><td>操控之王，6AT 变速箱</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/694103750000000019026ecf" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>本田 CR-V</strong></td><td>10-15 万</td><td>经典合资 SUV</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a3531e1000000001702db6e" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>捷途旅行者</strong></td><td>15 万左右</td><td>硬派造型</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/68f74ac90000000007022216" target="_blank">原帖</a></td></tr>
+        <tr><td><strong>领克 06</strong></td><td>12 万+</td><td>年轻潮流设计</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/68f74ac90000000007022216" target="_blank">原帖</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>💬 锋兰达 2.0L 舒适版 · 评论区真实成交价</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>湖州</td><td><span class="price-badge">9.5 万</span></td><td>全款，自认为好价</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">评论 #10</a></td></tr>
+        <tr><td>湖南</td><td><span class="price-badge">9.6 万</span></td><td>含 4000 首购补贴</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">评论 #5</a></td></tr>
+        <tr><td>吉林</td><td><span class="price-badge">9.85 万</span></td><td>含置换补贴 + 市补（不含利息）</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">评论 #2</a></td></tr>
+        <tr><td>山东</td><td>9.7 万</td><td>无补贴，全款</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">评论 #7</a></td></tr>
+        <tr><td>上海</td><td>10 万+</td><td>死活谈不下来</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">评论 #13</a></td></tr>
+        <tr><td>广东实体店</td><td>近 11 万</td><td>4S 店报价</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">评论 #4</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-danger">
+    ⚠️ <strong>注意</strong>：有评论<a href="https://www.xiaohongshu.com/discovery/item/69df5b620000000020038a5c" target="_blank">（#17）</a>明确质疑锋兰达的低价是否把国补 + 地方补 + 旧车报废全部按最大值计算。<strong>纯全款无补贴价约 9.7-10 万+</strong>。
+  </div>
+
+  <h4>💬 卡罗拉锐放 · 评论区真实成交价</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>江苏</td><td><span class="price-badge">10.3 万</span></td><td>纯油，全款黑色</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">评论 #1</a></td></tr>
+        <tr><td>河南</td><td><span class="price-badge">10.5 万</span></td><td>纯油，5 月提</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">评论 #6</a></td></tr>
+        <tr><td>江苏</td><td>11.1 万</td><td>纯油，刚问的价</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">评论 #4</a></td></tr>
+        <tr><td>广东（双擎精英）</td><td><span class="price-badge">11.8 万</span></td><td>双擎版</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">评论 #5</a></td></tr>
+        <tr><td>浙江</td><td>12.6 万</td><td>—</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">评论 #2</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h3>⚡ 双擎/混动 · 轿车（10-15 万）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>参考落地价</th><th>类型</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>丰田凯美瑞双擎</strong> 精英版</td><td><span class="price-badge">12.78 万</span></td><td><span class="tag-hev">油混 HEV ★</span></td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69fa8bc20000000035031669" target="_blank">凯美瑞双擎帖</a></td></tr>
+        <tr><td><strong>丰田凯美瑞双擎</strong></td><td>15 万左右</td><td><span class="tag-hev">油混 HEV ★</span></td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a37551a0000000007027c57" target="_blank">凯美瑞帖</a></td></tr>
+        <tr><td><strong>丰田卡罗拉双擎</strong></td><td>10 万左右</td><td><span class="tag-hev">油混 HEV ★</span></td><td>多个帖子</td></tr>
+        <tr><td><strong>丰田雷凌双擎</strong></td><td>11 万左右</td><td><span class="tag-hev">油混 HEV ★</span></td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f192a60000000035024014" target="_blank">雷凌帖</a></td></tr>
+        <tr><td><strong>比亚迪海豹 06 DM-i</strong></td><td>10-13 万</td><td><span class="tag-phev">插混 PHEV</span></td><td>销量破万车型</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-info">
+    💬 凯美瑞双擎精英版 12.78 万 —— 来源：<a href="https://www.xiaohongshu.com/discovery/item/69fa8bc20000000035031669" target="_blank">帖子链接</a>，评论普遍说"不贵"。但有评论问是否含旧车置换，博主未回复，<strong>建议到店确认</strong>。
+  </div>
+
+  <hr>
+
+  <h3>⚡ 双擎/混动 · SUV（10-15 万）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>价格区间</th><th>半年销量</th><th>类型</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>比亚迪宋 PLUS DM</strong></td><td>11.58-16.18 万</td><td>68,897 辆</td><td><span class="tag-phev">插混</span></td><td rowspan="7"><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/68b5c1a5000000001c03077c" target="_blank">15 万混动 SUV 帖</a></td></tr>
+        <tr><td><strong>比亚迪宋 L DM</strong></td><td>11.58-16.18 万</td><td>74,138 辆</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>银河星舰 7</strong> EM-i</td><td>8.78-12.08 万</td><td>58,705 辆</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>零跑 C10</strong></td><td>11.18-15.18 万</td><td>60,439 辆</td><td><span class="tag-phev">增程</span></td></tr>
+        <tr><td><strong>长安启源 Q07</strong></td><td>11.98-15.68 万</td><td>28,305 辆</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>奇瑞风云 T9</strong></td><td>11.29-16.39 万</td><td>26,270 辆</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>哈弗枭龙 MAX</strong></td><td>11.68-15.48 万</td><td>22,484 辆</td><td><span class="tag-phev">插混</span></td></tr>
+        <tr><td><strong>丰田锋兰达双擎</strong> 领先版</td><td><span class="price-badge">~12 万落地</span></td><td>—</td><td><span class="tag-hev">油混 HEV ★</span></td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69d377290000000021012ccb" target="_blank">锋兰达双擎帖</a></td></tr>
+        <tr><td><strong>丰田卡罗拉锐放双擎</strong></td><td>10-13 万</td><td>—</td><td><span class="tag-hev">油混 HEV ★</span></td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a36021b0000000021018a76" target="_blank">锐放帖</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>💬 锋兰达双擎领先版 · 评论区成交价</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>吉林</td><td><span class="price-badge">12 万</span></td><td>裸车 10.38 万，全款落地</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69d377290000000021012ccb" target="_blank">评论 #1</a></td></tr>
+        <tr><td>湖北</td><td>12 万 - 0.4 万</td><td>另有车补 4000</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69d377290000000021012ccb" target="_blank">评论 #4</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 3: Core Comparison -->
+<div class="section">
+  <h2><span class="emoji">三</span> 核心对比：真实买家最关心的 6 款车</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>车型</th><th>2026 年真实落地价</th><th>适合人群</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>经典轩逸</strong></td>
+          <td><span class="badge-red">6.7-7.2 万</span> 🏆 最低价</td>
+          <td>预算最有限、纯代步、省油省心</td>
+        </tr>
+        <tr>
+          <td><strong>朗逸五百万版</strong></td>
+          <td><span class="badge-red">8.6-9.0 万</span></td>
+          <td>德系品质、保值率、家用均衡</td>
+        </tr>
+        <tr>
+          <td><strong>丰田锋兰达 2.0L 舒适</strong></td>
+          <td><span class="badge-red">9.5-10 万</span> ⚠️部分含补贴</td>
+          <td>合资 SUV、省油、保值</td>
+        </tr>
+        <tr>
+          <td><strong>卡罗拉锐放 纯油</strong></td>
+          <td><span class="badge-red">10.3-11.1 万</span></td>
+          <td>合资 SUV、好停车、家用</td>
+        </tr>
+        <tr>
+          <td><strong>锋兰达双擎</strong></td>
+          <td><span class="badge-red">~12 万</span></td>
+          <td>双擎不用充电、低油耗、省心</td>
+        </tr>
+        <tr>
+          <td><strong>凯美瑞双擎 精英版</strong></td>
+          <td><span class="badge-red">~12.78 万</span> ⚠️含置换未确认</td>
+          <td>B 级车体验、双擎低油耗、商务家用均可</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 4: Price Traps -->
+<div class="section">
+  <h2><span class="emoji">四</span> 评论区价格陷阱总结</h2>
+  <div class="trap-card">
+    <h4>⚠️ 小红书买车的 5 个大坑</h4>
+    <ul>
+      <li><strong>标题价 ≠ 你拿到的价</strong> — 很多低价标题把国补（~2 万）+ 省补（0.5-1 万）+ 厂家置换 + 旧车报废价全算进去了</li>
+      <li><strong>纯全款价比标题高 1.5-3 万</strong> — 部分博主发的是"资源车"渠道价，普通消费者在 4S 店拿不到</li>
+      <li><strong>4S 店附加费</strong> — 强制捆绑保险、服务费、上牌费（评论区吐槽最多的）</li>
+      <li><strong>南北差价大</strong> — 广东/吉林/山东价格最便宜，上海/江苏最贵，差可达 1 万+</li>
+      <li><strong>送的东西基本是垃圾</strong> — 4S 店送的贴膜/360/行车记录仪被评"精品垃圾"，建议折现</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Section 5: Tips -->
+<div class="section">
+  <h2><span class="emoji">五</span> 砍价建议（来自小红书评论区）</h2>
+  <ul class="tip-list">
+    <li><strong>月底 / 季度末去谈</strong>，4S 店冲量时价格最优</li>
+    <li><strong>全款先问</strong>："全款裸车多少？" 分期套路多，先问全款再对比分期</li>
+    <li><strong>比三家</strong>：拿到一家店的报价单去另一家压价</li>
+    <li><strong>一句话话术</strong>："我对比了 3 家店，你给实价，合适今天就定"</li>
+    <li><strong>别信加装的精品</strong>：送的膜和记录仪基本都是差的，要折现或不要</li>
+  </ul>
+</div>
+
+<!-- Section 6: Reminders -->
+<div class="section">
+  <h2><span class="emoji">六</span> 重要提醒</h2>
+  <div class="callout callout-warning">
+    <strong>🔋 双擎（HEV） vs 插混（PHEV）</strong><br>
+    双擎 = 不用充电，油耗极低（4L 左右），丰田主打，更方便省心<br>
+    插混 = 可充电，短途纯电，比亚迪等国产主打
+  </div>
+  <div class="callout callout-info">
+    💰 2026 年燃油车处于历史低位，购置税 ≈ 裸车价 ÷ 11.3
+  </div>
+  <div class="callout callout-danger">
+    ⚠️ 以上价格仅为小红书社区分享参考，实际需到店按当地行情谈。<br>
+    建议试驾后再决定，评论区多人强调空间和操控感受因人而异。
+  </div>
+</div>
+
+<div class="footer">
+  数据整理：2026 年 6 月 · 来源：小红书社区笔记 + 评论区 · 仅供购车参考
+</div>
+
+</div>
+
+</body>
+</html>
