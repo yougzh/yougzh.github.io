@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凯美瑞 vs 雅阁 | 小红书真实落地价 2026年6月</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --primary-light: #2b6cb0;
+    --accent: #e53e3e;
+    --accent-green: #38a169;
+    --accent-orange: #dd6b20;
+    --camry: #1a365d;
+    --accord: #c53030;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #2d3748;
+    --text-light: #718096;
+    --price-bg: #fff5f5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 50%, #c53030 100%);
+    color: white;
+    padding: 48px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: 1px; }
+  .header .subtitle { margin-top: 10px; font-size: 14px; opacity: 0.85; }
+  .header .meta { margin-top: 16px; font-size: 13px; opacity: 0.7; }
+  .header .vs-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  .section { background: var(--card); border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .section h2 { font-size: 20px; color: var(--primary); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  .section h3 { font-size: 17px; color: var(--primary-light); margin: 24px 0 12px; }
+  .section h4 { font-size: 15px; color: var(--text); margin: 20px 0 10px; font-weight: 600; }
+  .section hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  .table-wrap { overflow-x: auto; margin: 12px 0; border-radius: 8px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 600px; }
+  thead { background: #edf2f7; }
+  th { padding: 10px 14px; text-align: left; font-weight: 600; color: var(--primary); white-space: nowrap; border-bottom: 2px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: #f7fafc; }
+
+  .price-badge { display: inline-block; background: var(--price-bg); color: var(--accent); font-weight: 700; padding: 1px 8px; border-radius: 4px; font-size: 14px; }
+  .badge-camry { display: inline-block; background: #ebf4ff; color: #2b6cb0; font-size: 11px; padding: 1px 8px; border-radius: 4px; font-weight: 600; }
+  .badge-accord { display: inline-block; background: #fff5f5; color: #c53030; font-size: 11px; padding: 1px 8px; border-radius: 4px; font-weight: 600; }
+  .badge-red { display: inline-block; background: var(--accent); color: white; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 4px; }
+  .badge-green { display: inline-block; background: var(--accent-green); color: white; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 4px; }
+
+  .callout { padding: 14px 18px; border-radius: 8px; margin: 16px 0; font-size: 14px; line-height: 1.6; }
+  .callout-success { background: #f0fff4; border-left: 4px solid var(--accent-green); color: #22543d; }
+  .callout-warning { background: #fffaf0; border-left: 4px solid var(--accent-orange); color: #7b341e; }
+  .callout-info { background: #ebf8ff; border-left: 4px solid var(--primary-light); color: #2a4365; }
+  .callout-danger { background: #fff5f5; border-left: 4px solid var(--accent); color: #9b2c2c; }
+  .callout a { color: inherit; text-decoration: underline; }
+
+  a { color: var(--primary-light); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .link-btn { display: inline-block; background: #ebf8ff; color: var(--primary-light); font-size: 12px; padding: 2px 10px; border-radius: 4px; }
+  .link-btn:hover { background: #bee3f8; text-decoration: none; }
+
+  .trap-card { background: linear-gradient(135deg, #fff5f5, #ffeef0); border: 1px solid #fed7d7; border-radius: 10px; padding: 18px 22px; margin: 16px 0; }
+  .trap-card h4 { color: var(--accent); margin: 0 0 10px; }
+  .trap-card ul { list-style: none; padding: 0; }
+  .trap-card li { padding: 6px 0; font-size: 14px; border-bottom: 1px solid rgba(229,62,62,0.1); }
+  .trap-card li:last-child { border-bottom: none; }
+  .trap-card li::before { content: '⚠️ '; margin-right: 4px; }
+
+  /* VS Column Layout */
+  .vs-row { display: flex; gap: 20px; margin: 16px 0; }
+  .vs-col { flex: 1; padding: 20px; border-radius: 10px; }
+  .vs-col-camry { background: #ebf8ff; border: 1px solid #bee3f8; }
+  .vs-col-accord { background: #fff5f5; border: 1px solid #fed7d7; }
+  .vs-col h3 { margin: 0 0 12px; font-size: 18px; }
+  .vs-col ul { list-style: none; padding: 0; }
+  .vs-col li { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 14px; }
+  .vs-col li:last-child { border-bottom: none; }
+  .vs-col .big-price { font-size: 28px; font-weight: 700; margin: 8px 0; }
+  .vs-col .vs-label { font-size: 12px; color: var(--text-light); }
+
+  @media (max-width: 640px) {
+    .vs-row { flex-direction: column; }
+    .header h1 { font-size: 22px; }
+    .section { padding: 20px 16px; }
+    table { font-size: 13px; min-width: auto; }
+    th, td { padding: 8px 10px; }
+  }
+
+  .footer { text-align: center; padding: 32px 0 48px; color: var(--text-light); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>🚗 凯美瑞 vs 雅阁 · 对标调研</h1>
+    <div class="subtitle">B 级车王者对决 · 小红书评论区真实落地价</div>
+    <div class="meta">📅 2026 年 6 月 &nbsp;·&nbsp; 📍 来源：小红书社区笔记 + 评论区</div>
+    <div class="vs-badge">⚔️ 凯美瑞 vs 雅阁 &nbsp;·&nbsp; 谁更值得买？</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- VS Hero Section -->
+<div class="section">
+  <div class="vs-row">
+    <div class="vs-col vs-col-camry">
+      <h3 style="color:#2b6cb0;">🥇 丰田凯美瑞</h3>
+      <div class="big-price" style="color:#2b6cb0;">14.9 万起</div>
+      <div class="vs-label">双擎豪华版 · 评论区真实落地价</div>
+      <ul>
+        <li>✅ 双擎不用充电，油耗 <strong>4.2-4.5L</strong></li>
+        <li>✅ TNGA 架构，安全配置全系标配</li>
+        <li>✅ 三年保值率约 65%</li>
+        <li>✅ 油耗低，加 92 号油</li>
+        <li>⚠️ 双擎价格比雅阁贵约 1-2 万</li>
+      </ul>
+    </div>
+    <div class="vs-col vs-col-accord">
+      <h3 style="color:#c53030;">🥈 本田雅阁</h3>
+      <div class="big-price" style="color:#c53030;">14.2 万起</div>
+      <div class="vs-label">260TURBO 豪华版 · 评论区真实落地价</div>
+      <ul>
+        <li>✅ 1.5T 192 匹，动力输出直接</li>
+        <li>✅ 豪华版 <strong>14.2-14.9 万</strong> 落地，更便宜</li>
+        <li>✅ 包牌包税资源车低至 12.98 万</li>
+        <li>✅ 操控顺滑，空间大</li>
+        <li>⚠️ 无 HUD/座椅通风，评论区有亏电投诉</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 凯美瑞 -->
+<!-- ========================= -->
+<div class="section">
+  <h2>🥇 丰田凯美瑞 · 详细数据</h2>
+
+  <h3>双擎豪华版（主力车型）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>裸车优惠</th><th>条件</th><th>时间</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>广东</td>
+          <td><span class="badge-red">14.9 万可谈</span></td>
+          <td>优惠约 5 万+</td>
+          <td>首购无置换</td>
+          <td>6月14日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f8a7170000000020039243" target="_blank">评论</a></td>
+        </tr>
+        <tr>
+          <td>—</td>
+          <td><span class="price-badge">~15.8 万</span></td>
+          <td>优惠 5 万</td>
+          <td>指导价18.98-5=13.98裸车+税1.23+保0.5</td>
+          <td>5月4日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f8a7170000000020039243" target="_blank">原帖</a></td>
+        </tr>
+        <tr>
+          <td>浙江</td>
+          <td><span class="price-badge">15.9 万</span></td>
+          <td>—</td>
+          <td>双擎珍珠白</td>
+          <td>5月5日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f8a7170000000020039243" target="_blank">评论</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>双擎 Lite 版（入门）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>广东</td><td><span class="price-badge">15 万</span></td><td>全款15.4-0.4首购补贴</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f8a7170000000020039243" target="_blank">评论</a></td></tr>
+        <tr><td>陕西</td><td>裸车优惠 5.9 万</td><td>五一订车</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f8a7170000000020039243" target="_blank">评论</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>双擎精英版</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>全国参考</th><th>落地价</th><th>明细</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>指导价 179,800</td><td rowspan="3"><span class="badge-red">~15 万</span></td><td>现金优惠 31,000</td></tr>
+        <tr><td>购置税 12,991</td><td>置换补贴 2,000</td></tr>
+        <tr><td>保险 5,000 + 上牌 1,500</td><td>另有两年免息</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info">
+    📌 来源：<a href="https://www.xiaohongshu.com/discovery/item/6a23f739000000001c027039" target="_blank">00后小伙15W拿下26款凯美瑞双擎</a>
+  </div>
+
+  <h3>双擎运动 plus 版（高配）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>广州</td><td><span class="price-badge">16.85 万</span></td><td>黑色全款，不算任何补贴</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a365a4b000000000702cccd" target="_blank">评论</a></td></tr>
+        <tr><td>重庆</td><td><span class="price-badge">15.55 万</span></td><td>白色17.7-厂补0.3-报废1.5-残值0.35</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a365a4b000000000702cccd" target="_blank">原帖</a></td></tr>
+        <tr><td>广东（极限）</td><td><span class="price-badge">17.1 万</span></td><td>黑色极限优惠5.6万，需上广东牌</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a365a4b000000000702cccd" target="_blank">原帖</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-warning">
+    ⚠️ 运动plus版含多处补贴计算（厂补/报废/残值），纯全款价约 16.85-17.1 万。<br>
+    评论区指出：首购/置换/报废/厂补 <strong>不能同时使用</strong>，需选其一。
+  </div>
+
+  <h4>💬 凯美瑞评论区买家声音</h4>
+  <div class="callout callout-info">
+    • "我预算是13w落地，销售说15w还能谈" — 湖南<br>
+    • "双擎豪华14.9可以谈" — 博主6月14日更新<br>
+    • "Lite版全款15.4落地减4000首购=15落地" — 广东<br>
+    • "15.9落地双擎珍珠白" — 浙江<br>
+    • "以前凯美瑞双擎要20万+，现在真降了"
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 雅阁 -->
+<!-- ========================= -->
+<div class="section">
+  <h2>🥈 本田雅阁 · 详细数据</h2>
+
+  <h3>260TURBO 豪华版（主力车型）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>时间</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>广东</td>
+          <td><span class="badge-red">14.58 万</span></td>
+          <td>还没减首购补贴</td>
+          <td>5月17日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a09cdaa000000003700c2f5" target="_blank">评论</a></td>
+        </tr>
+        <tr>
+          <td>江西</td>
+          <td><span class="price-badge">14.2 万</span></td>
+          <td>白色豪华，贷款12个</td>
+          <td>5月31日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a09cdaa000000003700c2f5" target="_blank">评论</a></td>
+        </tr>
+        <tr>
+          <td>江苏</td>
+          <td><span class="price-badge">14.71 万</span></td>
+          <td>全款</td>
+          <td>5月17日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a09cdaa000000003700c2f5" target="_blank">评论</a></td>
+        </tr>
+        <tr>
+          <td>江苏</td>
+          <td><span class="price-badge">14.9 万</span></td>
+          <td>全款落地</td>
+          <td>5月5日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/69f9b85b000000002301e7e9" target="_blank">报价单帖</a></td>
+        </tr>
+        <tr>
+          <td>浙江</td>
+          <td><span class="price-badge">13.7 万</span></td>
+          <td>全款15-旧车报废1.3</td>
+          <td>5月18日</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a09cdaa000000003700c2f5" target="_blank">评论</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>包牌包税车（资源车渠道）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>版本</th><th>价格</th><th>说明</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>豪华版</td>
+          <td><span class="badge-red">12.98 万</span></td>
+          <td>指导价19.78万，包牌包税全款</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a1e499d000000003503a185" target="_blank">清库帖</a></td>
+        </tr>
+        <tr>
+          <td>豪华版</td>
+          <td><span class="price-badge">13.1 万</span></td>
+          <td>不含省补</td>
+          <td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a33f190000000001503e39f" target="_blank">评论</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-danger">
+    ⚠️ <strong>包牌包税车风险说明</strong>（来自评论区）：<br>
+    • 实际上是"二手新车"（已上牌过户），到你手上是二手车身份<br>
+    • 无法享受首任车主质保，只剩国家3年/8万公里质保<br>
+    • 评论区多人问"资源车哪里保养"、"什么路数，如何避雷"<br>
+    • 适合：不在意二手身份、想省钱的用户<br>
+    • 不适合：在意首任质保、保值率、贷款分期的用户
+  </div>
+
+  <h3>260TURBO 尊贵版</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>地区</th><th>落地价</th><th>条件</th><th>来源</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>福建</td><td><span class="price-badge">15.6 万</span></td><td>全款尊贵版</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a09cdaa000000003700c2f5" target="_blank">评论</a></td></tr>
+        <tr><td>安徽</td><td><span class="price-badge">16.5 万</span></td><td>全款尊贵版</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a09cdaa000000003700c2f5" target="_blank">评论</a></td></tr>
+        <tr><td>山东</td><td><span class="price-badge">13.8 万</span></td><td>补贴后尊贵版</td><td><a class="link-btn" href="https://www.xiaohongshu.com/discovery/item/6a33f190000000001503e39f" target="_blank">评论</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>💬 雅阁评论区买家声音</h4>
+  <div class="callout callout-info">
+    • "去年去店里问豪华版17w多，转身买了其他车" — 浙江（感慨降幅大）<br>
+    • "豪华15万多，尊贵17万多，网上都说13万包牌，跑去问都让我去网上买" — 四川<br>
+    • "一堆人有补贴置换啥的都不说，只说一个落地价，没有实际参考意义" — 河南<br>
+    • "我的雅阁只要半个月不启动就会亏电，门都开不了" — 广西（亏电投诉）<br>
+    • "去年十五万买的" — 四川（今年便宜了）<br>
+    • "豪华13.1不含省补，算抄到底了嘛" — 江苏
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- VS Comparison -->
+<!-- ========================= -->
+<div class="section">
+  <h2>⚔️ 全面对比 · 凯美瑞 vs 雅阁</h2>
+
+  <h3>价格对比</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>对比项</th><th><span class="badge-camry">凯美瑞</span></th><th><span class="badge-accord">雅阁</span></th><th>差值</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>最低落地价（全新车）</strong></td>
+          <td><span class="badge-red">14.9 万</span>（双擎豪华可谈）</td>
+          <td><span class="badge-red">14.2 万</span>（豪华版全款）</td>
+          <td>雅阁便宜 <strong>~7,000</strong></td>
+        </tr>
+        <tr>
+          <td><strong>包牌包税最低价</strong></td>
+          <td>—</td>
+          <td><span class="badge-red">12.98 万</span></td>
+          <td>雅阁有资源车渠道</td>
+        </tr>
+        <tr>
+          <td><strong>主力版落地区间</strong></td>
+          <td>15-16 万</td>
+          <td>14.2-14.9 万</td>
+          <td>雅阁便宜 <strong>~1 万</strong></td>
+        </tr>
+        <tr>
+          <td><strong>高配版落地</strong></td>
+          <td>16.85-17.1 万（运动plus）</td>
+          <td>15.6-16.5 万（尊贵）</td>
+          <td>雅阁便宜约 1 万</td>
+        </tr>
+        <tr>
+          <td><strong>6月价格趋势</strong></td>
+          <td>持续下降</td>
+          <td>已触底稳定</td>
+          <td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>产品力对比</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>对比项</th><th><span class="badge-camry">凯美瑞 2.0 双擎豪华</span></th><th><span class="badge-accord">雅阁 260TURBO 豪华</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>动力</strong></td><td>2.0L 混动 152+113匹（综合）</td><td>1.5T 192匹</td></tr>
+        <tr><td><strong>变速箱</strong></td><td>E-CVT</td><td>CVT</td></tr>
+        <tr><td><strong>油耗</strong></td><td><strong>4.2-4.5L</strong> ⭐</td><td>6.6L</td></tr>
+        <tr><td><strong>油号</strong></td><td>92 号</td><td>92 号</td></tr>
+        <tr><td><strong>轴距</strong></td><td>2825mm</td><td>2830mm</td></tr>
+        <tr><td><strong>保值率（3年）</strong></td><td><strong>约 65%</strong> ⭐</td><td>约 60%</td></tr>
+        <tr><td><strong>主要短板</strong></td><td>胎噪大、低配塑料感</td><td>有亏电投诉、配置简配</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>选谁？决策树</h3>
+  <div class="callout callout-success">
+    <strong>选凯美瑞，如果：</strong><br>
+    🏆 你每年开得多（1.5万公里+），双擎省油优势明显<br>
+    🏆 你在意低油耗（4.2L vs 6.6L，每年省约3000油费）<br>
+    🏆 你要双擎不用充电的便利<br>
+    🏆 你追求高保值率
+  </div>
+  <div class="callout callout-info">
+    <strong>选雅阁，如果：</strong><br>
+    🏆 你预算更紧，雅阁便宜约 1 万<br>
+    🏆 你喜欢动力直接输出（1.5T 192匹涡轮更猛）<br>
+    🏆 你能接受纯油的油耗<br>
+    🏆 你想找包牌包税资源车省钱（12.98万）<br>
+    🏆 你愿意承担二手身份的风险
+  </div>
+
+  <div class="callout callout-warning">
+    <strong>结论：</strong><br>
+    • <strong>要省油省心 → 凯美瑞双擎</strong>（每年油费省约3000，3年省近1万，抵消差价）<br>
+    • <strong>要极致省钱 → 雅阁包牌包税车</strong>（12.98万，需接受二手身份）<br>
+    • <strong>正常家用选雅阁豪华版</strong>（14.2万，最便宜的B级新车）<br>
+    • <strong>评论区共识</strong>：不要只看标题价，一定要问清楚"全款无置换多少钱"
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- Price Traps -->
+<!-- ========================= -->
+<div class="section">
+  <h2>⚠️ 专门针对凯美瑞/雅阁的价格陷阱</h2>
+  <div class="trap-card">
+    <ul>
+      <li><strong>"优惠 X 万" ≠ 你能省 X 万</strong> — 凯美瑞优惠5-6万通常包含：厂补 + 置换 + 报废 + 金融贴息，纯全款优惠约 3-4 万</li>
+      <li><strong>包牌包税车的代价</strong> — 雅阁12.98万看似划算，但变成二手车身份，损失首任质保和保值率</li>
+      <li><strong>评论区真实声音</strong>："网上说6万优惠，现实中自己去一问一个不吱声" — 雅阁车主</li>
+      <li><strong>双擎省钱算总账</strong> — 凯美瑞双擎贵约1万，但每年省3000油费，3年回本</li>
+      <li><strong>地区差价</strong> — 广东买凯美瑞最便宜（产地优势），雅阁全国差价约 5000-8000</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 砍价 -->
+<!-- ========================= -->
+<div class="section">
+  <h2>💡 凯美瑞/雅阁 砍价话术（小红书评论区总结）</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>步骤</th><th>话术</th><th>目的</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1️⃣</strong></td><td>"全款裸车优惠多少？不含置换不含补贴"</td><td>先摸清底价</td></tr>
+        <tr><td><strong>2️⃣</strong></td><td>"我对比了3家店，你给个实价"</td><td>施压比价</td></tr>
+        <tr><td><strong>3️⃣</strong></td><td>"不要赠品，折现减车价"</td><td>4S赠品质量差</td></tr>
+        <tr><td><strong>4️⃣</strong></td><td>"月底/季度末冲量，能给多少？"</td><td>选时机</td></tr>
+        <tr><td><strong>5️⃣</strong></td><td>"列清楚：裸车+税+保+上牌，不要其他费用"</td><td>防隐藏收费</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-warning">
+    <strong>⚠️ 评论区特别提醒：</strong><br>
+    • 先问全款价，再问分期（分期套路更多）<br>
+    • 雅阁有亏电投诉，提车后注意检查电瓶<br>
+    • 凯美瑞不要加钱选白色（珍珠白+2000不划算）<br>
+    • 包牌包税车一定要问清质保和过户流程
+  </div>
+</div>
+
+<div class="footer">
+  数据整理：2026 年 6 月 &nbsp;·&nbsp; 来源：小红书社区<br>
+  所有价格均为评论区真实买家分享，含链接可查证
+</div>
+
+</div>
+
+</body>
+</html>
