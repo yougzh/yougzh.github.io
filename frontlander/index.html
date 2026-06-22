@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>丰田锋兰达 全面调研报告 — 广东落地价·优缺点</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #0a0a0f;
+  color: #e0e0e0;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 60px 0 40px;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b35, #f7c948, #ff6b35);
+  border-radius: 2px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f7c948 0%, #ff6b35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+.hero .subtitle {
+  font-size: 1.05rem;
+  color: #888;
+  font-weight: 300;
+}
+.hero .meta {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #666;
+}
+.hero .meta span { margin: 0 10px; }
+.hero .badge {
+  display: inline-block;
+  background: rgba(255,107,53,0.15);
+  color: #ff8a5c;
+  border: 1px solid rgba(255,107,53,0.3);
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+/* Section */
+.section { margin-top: 48px; }
+.section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+  padding-left: 14px;
+  border-left: 4px solid #f7c948;
+}
+.section h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ddd;
+  margin: 28px 0 14px;
+}
+.section p, .section li { font-size: 0.95rem; color: #c0c0c0; margin-bottom: 8px; }
+.section ul { padding-left: 20px; }
+.section ul li { list-style: none; padding-left: 18px; position: relative; }
+.section ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #555;
+}
+
+/* Price Cards Grid */
+.price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+@media (max-width: 700px) { .price-grid { grid-template-columns: 1fr; } }
+.price-card {
+  background: linear-gradient(135deg, #13131f 0%, #1a1a2e 100%);
+  border: 1px solid #2a2a3e;
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.price-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+}
+.price-card.hot::before { background: linear-gradient(180deg, #ff6b35, #f7c948); }
+.price-card.normal::before { background: linear-gradient(180deg, #4fc3f7, #29b6f6); }
+.price-card.eco::before { background: linear-gradient(180deg, #66bb6a, #43a047); }
+.price-card .config { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+.price-card .price { font-size: 1.8rem; font-weight: 900; margin: 6px 0 4px; }
+.price-card.hot .price { color: #ff8a5c; }
+.price-card.normal .price { color: #4fc3f7; }
+.price-card.eco .price { color: #66bb6a; }
+.price-card .detail { font-size: 0.85rem; color: #999; }
+.price-card .note { font-size: 0.8rem; color: #777; margin-top: 6px; border-top: 1px solid #222; padding-top: 6px; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 16px 0;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+thead { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #aaa;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2a2a3e;
+}
+td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #1a1a20;
+  color: #ccc;
+  font-size: 0.88rem;
+}
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody tr:last-child td { border-bottom: none; }
+
+.price-flag {
+  display: inline-block;
+  padding: 1px 10px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.price-flag.best { background: rgba(102,187,106,0.18); color: #66bb6a; }
+.price-flag.good { background: rgba(79,195,247,0.15); color: #4fc3f7; }
+.price-flag.ok { background: rgba(255,183,77,0.15); color: #ffb74d; }
+.price-flag.high { background: rgba(239,83,80,0.13); color: #ef5350; }
+
+.tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.06);
+  color: #999;
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin: 1px 2px;
+}
+.tag.gd { background: rgba(247,201,72,0.12); color: #f7c948; }
+.tag.pos { background: rgba(102,187,106,0.12); color: #66bb6a; }
+.tag.neg { background: rgba(239,83,80,0.12); color: #ef5350; }
+.tag.warn { background: rgba(255,183,77,0.12); color: #ffb74d; }
+
+/* Pros/Cons */
+.pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 16px 0; }
+@media (max-width: 700px) { .pros-cons { grid-template-columns: 1fr; } }
+.pros, .cons {
+  background: #13131f;
+  border: 1px solid #2a2a3e;
+  border-radius: 14px;
+  padding: 20px;
+}
+.pros { border-top: 3px solid #66bb6a; }
+.cons { border-top: 3px solid #ef5350; }
+.pros h4 { color: #66bb6a; font-size: 1rem; margin-bottom: 12px; }
+.cons h4 { color: #ef5350; font-size: 1rem; margin-bottom: 12px; }
+.pros li, .cons li { list-style: none; padding: 6px 0 6px 22px; position: relative; font-size: 0.9rem; }
+.pros li::before { content: '+'; position: absolute; left: 0; color: #66bb6a; font-weight: 700; }
+.cons li::before { content: '−'; position: absolute; left: 0; color: #ef5350; font-weight: 700; }
+.stars { color: #f7c948; font-size: 0.8rem; margin-left: 4px; }
+
+/* Tips */
+.tips {
+  background: linear-gradient(135deg, #1a1a2e, #0d1b2a);
+  border: 1px solid #1e3a5f;
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+}
+.tips h4 { color: #4fc3f7; font-size: 1rem; margin-bottom: 12px; }
+.tips li { list-style: none; padding: 5px 0 5px 20px; position: relative; font-size: 0.9rem; color: #bbb; }
+.tips li::before { content: '›'; position: absolute; left: 0; color: #4fc3f7; font-weight: 700; }
+
+/* Source link */
+.source-link {
+  color: #666;
+  font-size: 0.75rem;
+  text-decoration: none;
+  border-bottom: 1px dotted #444;
+}
+.source-link:hover { color: #f7c948; }
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #333, transparent);
+  margin: 32px 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 0 10px;
+  color: #555;
+  font-size: 0.8rem;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>丰田 锋兰达</h1>
+  <div class="subtitle">落地价 · 优缺点 · 广东购买指南</div>
+  <div class="badge">📅 2026年6月更新</div>
+  <div class="meta">
+    <span>📌 数据来源：小红书车主真实成交价</span>
+    <span>📍 重点区域：广东（广州/深圳/东莞/佛山）</span>
+  </div>
+</div>
+
+<!-- Quick Price Summary -->
+<div class="section">
+  <h2>💰 快速报价总览</h2>
+  <div class="price-grid">
+    <div class="price-card eco">
+      <div class="config">精英版 / 精英Plus（入门）</div>
+      <div class="price">8.5~9.5万</div>
+      <div class="detail">广东全款 目标落地价</div>
+      <div class="note">分期可更低，最低见8.5万</div>
+    </div>
+    <div class="price-card hot">
+      <div class="config">舒适版 / 舒适Plus（主销）</div>
+      <div class="price">9.2~10.0万</div>
+      <div class="detail">广东全款 目标落地价</div>
+      <div class="note">白色+2000，最多人买</div>
+    </div>
+    <div class="price-card normal">
+      <div class="config">领先版 / 豪华版（高配）</div>
+      <div class="price">10.5~11.5万</div>
+      <div class="detail">广东全款 目标落地价</div>
+      <div class="note">含L2智驾+天窗等</div>
+    </div>
+    <div class="price-card normal">
+      <div class="config">双擎领先 / 豪华（混动）</div>
+      <div class="price">11.0~12.5万</div>
+      <div class="detail">广东 目标落地价</div>
+      <div class="note">油耗低至4.56L，可上节能牌</div>
+    </div>
+  </div>
+</div>
+
+<!-- Guangdong Prices Detail -->
+<div class="section">
+  <h2>📍 广东 · 燃油版落地价明细</h2>
+  <p style="color:#888;font-size:0.85rem;margin-bottom:12px;">价格按配置从低到高排列，标注了补贴情况和数据来源。</p>
+
+  <h3>精英版 / 精英Plus（2.0L CVT 最低配）</h3>
+  <table>
+    <thead><tr><th>时间</th><th>地区</th><th>落地价</th><th>付款</th><th>补贴说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>2026.06</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag best">9.2万</span></td>
+        <td>全款</td><td>含首购补贴 · 送2次保养</td>
+      </tr>
+      <tr>
+        <td>2026.06</td><td><span class="tag gd">广州/佛山</span></td>
+        <td><span class="price-flag best">9W+</span></td>
+        <td>全款</td><td>618清库促销 · 双擎也可上粤A</td>
+      </tr>
+      <tr>
+        <td>2025.06</td><td><span class="tag gd">深圳福永</span></td>
+        <td><span class="price-flag best">8.5万</span></td>
+        <td>分期</td><td>需致电确认（2025年价格）</td>
+      </tr>
+      <tr>
+        <td>2025.06</td><td><span class="tag gd">东莞</span></td>
+        <td><span class="price-flag good">9.43万</span></td>
+        <td>分期5年</td><td>含置换优惠0.8万 · 月供1458</td>
+      </tr>
+      <tr>
+        <td>2025.08</td><td><span class="tag gd">惠州</span></td>
+        <td><span class="price-flag good">9.7万</span></td>
+        <td>全款</td><td>送倒车可视+雷达+后排出风口</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>舒适版 / 舒适Plus（2.0L CVT 主销配置）</h3>
+  <table>
+    <thead><tr><th>时间</th><th>地区</th><th>落地价</th><th>付款</th><th>补贴说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>2026.06.19</strong></td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag best">8.76万</span></td>
+        <td>—</td><td>广东浠姐帮提 · 代购价（最新）</td>
+      </tr>
+      <tr>
+        <td>2026.05</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag best">9.4万</span></td>
+        <td>全款</td><td>未说明补贴</td>
+      </tr>
+      <tr>
+        <td>2026.05</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag good">9.6万</span></td>
+        <td>全款</td><td>未说明补贴</td>
+      </tr>
+      <tr>
+        <td>2026.05</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag ok">10.3万</span></td>
+        <td>全款</td><td>白色舒适 · 没算补贴6000（含补贴=9.7W）</td>
+      </tr>
+      <tr>
+        <td>2026.04</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag ok">10.36万</span></td>
+        <td>全款</td><td>舒适Plus白色</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>领先版 / 豪华版（高配）</h3>
+  <table>
+    <thead><tr><th>时间</th><th>地区</th><th>落地价</th><th>付款</th><th>补贴说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>2026.05</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag good">11.0万</span></td>
+        <td>全款</td><td>豪华白色 · 含首购补贴4000</td>
+      </tr>
+      <tr>
+        <td>2026.05</td><td><span class="tag gd">广东</span></td>
+        <td><span class="price-flag ok">11.4万</span></td>
+        <td>贷款</td><td>豪华版</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- Hybrid Prices -->
+<div class="section">
+  <h2>⚡ 双擎版落地价</h2>
+  <table>
+    <thead><tr><th>时间</th><th>地区</th><th>配置</th><th>落地价</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>2026.04</td><td><span class="tag gd">广州天河</span></td><td>双擎领先</td>
+        <td><span class="price-flag best">~11万</span></td><td>优惠5万 · 可再申请4000补贴</td>
+      </tr>
+      <tr>
+        <td>2026.04</td><td><span class="tag gd">广深</span></td><td>双擎豪华</td>
+        <td><span class="price-flag good">12.5~12.6万</span></td><td>销售报价+实际成交</td>
+      </tr>
+      <tr>
+        <td>2026.05</td><td>河北</td><td>双擎低配</td>
+        <td><span class="price-flag ok">11.4万</span></td><td>不含置换补贴（外省参考）</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="color:#888;font-size:0.85rem;margin-top:8px;">💡 双擎比同配燃油贵约1.5~2万，油耗低至4.56L/100km，广东可选择上节能牌。</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- Pros & Cons -->
+<div class="section">
+  <h2>📊 真实车主 · 优缺点总结</h2>
+  <p style="color:#888;font-size:0.85rem;margin-bottom:12px;">综合小红书多位高赞车主实测反馈（5000km/10000km/半年使用）</p>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h4>✅ 优点</h4>
+      <ul>
+        <li><strong>省油</strong> — 燃油6.5L/100km（国道最低4.2），双擎4.56L，加92号<span class="stars">★★★★★</span></li>
+        <li><strong>好开易上手</strong> — TNGA底盘紧致，转向线性精准，刹车油门线性，新手友好<span class="stars">★★★★</span></li>
+        <li><strong>L2辅助驾驶好用</strong> — TSS3.0标配，高速释放精力<span class="stars">★★★★</span></li>
+        <li><strong>省心耐用</strong> — 丰田品质，保养约600元/次，故障率低<span class="stars">★★★★</span></li>
+        <li><strong>前排舒适</strong> — 人机工学好，坐垫软硬适中，久坐不累<span class="stars">★★★</span></li>
+        <li><strong>2026款升级</strong> — 高通8155芯片+双联屏+CarPlay/HiCar<span class="stars">★★★</span></li>
+        <li><strong>动力平顺</strong> — 2.0L自吸171马力，城市代步足够，后段有力<span class="stars">★★★</span></li>
+        <li><strong>保值率尚可</strong> — 丰田品牌+入门低价，二手出手快<span class="stars">★★</span></li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h4>❌ 缺点</h4>
+      <ul>
+        <li><strong>后排空间小</strong> — "灾难级"——网友原话。181cm顶腿，只适合两人或短途<span class="stars">🔴🔴🔴</span></li>
+        <li><strong>隔音差</strong> — 低配减配隔音棉，50km/h以上胎噪风噪明显<span class="stars">🔴🔴🔴</span></li>
+        <li><strong>内饰廉价</strong> — 塑料感强，像十年前的车，比国产车差太多<span class="stars">🔴🔴</span></li>
+        <li><strong>后扭力梁悬挂</strong> — 过减速带/坑洼晃动明显，滤震一般<span class="stars">🔴🔴</span></li>
+        <li><strong>车漆薄/保险杠软</strong> — 轻微刮擦易露底漆<span class="stars">🔴🔴</span></li>
+        <li><strong>后排不能放平</strong> — 放倒有台阶，不能当床用<span class="stars">🔴</span></li>
+        <li><strong>车机偶有卡顿</strong> — 老款掉线，充电发热时明显<span class="stars">🔴</span></li>
+        <li><strong>音响/喇叭拉胯</strong> — "听个响"，喇叭像125摩托车<span class="stars">🔴</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Buying Tips -->
+<div class="section">
+  <h2>🎯 广东购买指南</h2>
+
+  <div class="tips">
+    <h4>为什么广东便宜？</h4>
+    <ul>
+      <li>广汽丰田产线在广州，是产地大本营</li>
+      <li>广州/深圳/东莞/佛山4S店密集，竞争激烈压价</li>
+      <li>"在广东买广丰就是便宜"——外省网友原话</li>
+    </ul>
+  </div>
+
+  <div class="tips">
+    <h4>2026年6月砍价目标</h4>
+    <ul>
+      <li><strong>精英版全款 → 9万以下</strong>（裸车优惠4万+）</li>
+      <li><strong>舒适版全款 → 9.2~10.0万</strong>（主销配置，白色+2000）</li>
+      <li><strong>双擎领先 → 11~11.5万</strong></li>
+      <li>现在618清库促销，库存多好压价</li>
+    </ul>
+  </div>
+
+  <div class="tips">
+    <h4>砍价策略（车主经验提炼）</h4>
+    <ul>
+      <li>先谈裸车价，不要被赠品干扰注意力</li>
+      <li>说"全款能定"，拿到底价后再聊分期选择</li>
+      <li><strong>2000元交车服务费可以砍掉</strong>——很多车主反映这笔是纯利润</li>
+      <li>白色+2000可以谈成不加价</li>
+      <li>多跑几家对比：广州天河/番禺、深圳福永/龙岗、东莞南城</li>
+      <li>外省参考：如果价格超过13万，评论区一致建议"不如上威兰达/荣放"</li>
+    </ul>
+  </div>
+
+  <div class="tips">
+    <h4>配置选择建议</h4>
+    <ul>
+      <li><strong>预算8~10万 → 精英版/精英Plus</strong>：配置够用，性价比最高</li>
+      <li><strong>预算10~12万 → 舒适版</strong>：最多人买，无钥匙进入+一键启动+倒车影像+自动空调+皮座椅</li>
+      <li><strong>经常跑市区 → 双擎领先版</strong>：油耗优势明显，广东可上节能牌</li>
+      <li>注意：锋兰达和卡罗拉锐放是姊妹车，核心相同的，哪家便宜买哪家</li>
+    </ul>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Data Sources -->
+<div class="section">
+  <h2>📝 数据来源</h2>
+  <p style="color:#888;font-size:0.85rem;">所有数据来自小红书车主/4S店真实分享，精确到评论级别。</p>
+  <table>
+    <thead><tr><th>来源</th><th>类型</th><th>数据点</th></tr></thead>
+    <tbody>
+      <tr><td>深圳锋兰达落地价帖（59赞/124评）</td><td>评论均价</td><td>深圳9.58万、惠州9.7万、珠海9开头</td></tr>
+      <tr><td>锋兰达购车帖（30赞/132评）</td><td>评论均价</td><td>白色舒适10.3万未含补贴</td></tr>
+      <tr><td>8万7拿下锋兰达（582赞/346评）</td><td>博主自述+评论</td><td>精英版贷款8.7万落地，无旧车置换</td></tr>
+      <tr><td>急急急26款锋兰达（50赞/225评）</td><td>评论均价</td><td>广东各地26款价格参考</td></tr>
+      <tr><td>广东浠姐帮提帖（2026.06.19）</td><td>代购报价</td><td>2026舒适版8.76万最新报价</td></tr>
+      <tr><td>锋兰达双擎豪华版帖（广深）</td><td>评论</td><td>双擎领先11万（广州天河）</td></tr>
+      <tr><td>东莞4S偷拍报价单（104赞）</td><td>4S报价单</td><td>精英Plus分期9.43万</td></tr>
+      <tr><td>618购车节（广州/佛山）</td><td>4S促销</td><td>9W+提车，双擎可上粤A</td></tr>
+      <tr><td>2026舒适版+豪华版试驾帖</td><td>试驾报价</td><td>成都参考价11.5万（外省对照）</td></tr>
+      <tr><td>锋兰达优缺点帖（369+218+172+150赞）</td><td>车主体验</td><td>5000km/10000km真实感受</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>数据采集于2026年6月 · 价格月月变动，到店以实际报价为准</p>
+  <p>Made with ❤️ for 广东车友</p>
+</div>
+
+</div>
+</body>
+</html>
