@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>福特蒙迪欧1.5T 深度调研报告</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a28;
+    --border: #2a2a3e;
+    --text: #e0e0ec;
+    --text-dim: #8888a0;
+    --accent: #4f9cf7;
+    --green: #34d399;
+    --red: #f87171;
+    --amber: #fbbf24;
+    --blue: #60a5fa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a30 50%, #0f1f2a 100%);
+    padding: 48px 20px 36px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(79,156,247,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(52,211,153,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    letter-spacing: 1px;
+  }
+  .hero .subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    position: relative;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(79,156,247,0.15);
+    color: var(--accent);
+    font-size: 12px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-top: 12px;
+    border: 1px solid rgba(79,156,247,0.2);
+    position: relative;
+  }
+  .hero .price-big {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 16px;
+    position: relative;
+  }
+  .hero .price-big span {
+    color: var(--green);
+  }
+  .hero .price-label {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2 .icon { font-size: 20px; }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 14px 0 8px;
+  }
+  .card h3:first-child { margin-top: 0; }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    background: rgba(79,156,247,0.08);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 10px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .price-cell { font-weight: 700; color: #fff; white-space: nowrap; }
+  .price-cell.green { color: var(--green); }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .tag-best { background: rgba(52,211,153,0.15); color: var(--green); }
+  .tag-hot { background: rgba(251,191,36,0.15); color: var(--amber); }
+
+  /* Pros/Cons */
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pros-cons .box { padding: 14px; border-radius: 10px; }
+  .pros-cons .pro-box { background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.15); }
+  .pros-cons .con-box { background: rgba(248,113,113,0.06); border: 1px solid rgba(248,113,113,0.15); }
+  .pros-cons .box-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .pros-cons .pro-box .box-title { color: var(--green); }
+  .pros-cons .con-box .box-title { color: var(--red); }
+  .pros-cons ul { list-style: none; padding: 0; }
+  .pros-cons li {
+    font-size: 13px;
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .pros-cons .pro-box li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+  }
+  .pros-cons .con-box li::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  /* Version cards */
+  .version-grid { display: grid; gap: 10px; }
+  .version-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s;
+  }
+  .version-item:hover { border-color: var(--accent); }
+  .version-item.recommended {
+    border-color: var(--green);
+    background: rgba(52,211,153,0.04);
+    position: relative;
+  }
+  .version-item.recommended::after {
+    content: '⭐ 推荐';
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    font-size: 11px;
+    background: var(--green);
+    color: #000;
+    padding: 1px 8px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+  .vi-left .vi-name { font-size: 14px; font-weight: 600; }
+  .vi-left .vi-desc { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .vi-right { text-align: right; }
+  .vi-right .vi-price { font-size: 18px; font-weight: 700; color: #fff; }
+  .vi-right .vi-sub { font-size: 11px; color: var(--text-dim); }
+
+  /* Quote */
+  .quote {
+    background: rgba(79,156,247,0.06);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin: 10px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .quote strong { color: var(--text); font-style: normal; }
+
+  /* Summary box */
+  .summary-box {
+    background: linear-gradient(135deg, rgba(79,156,247,0.06), rgba(52,211,153,0.04));
+    border: 1px solid rgba(79,156,247,0.15);
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 10px;
+  }
+  .summary-box .big {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--green);
+  }
+  .summary-box p { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 20px;
+    color: var(--text-dim);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .pros-cons { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 22px; }
+    .hero .price-big { font-size: 34px; }
+  }
+
+  /* Mini info row */
+  .info-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+  .info-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .info-item strong { color: var(--text); }
+
+  .source-link {
+    color: var(--accent);
+    font-size: 12px;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(79,156,247,0.3);
+  }
+
+  /* Alert banners */
+  .alert {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin: 10px 0;
+  }
+  .alert-warn { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); color: var(--amber); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🚗 福特蒙迪欧 1.5T</h1>
+  <div class="subtitle">深度社区调研 · 真实成交价 · 优缺点全解析</div>
+  <div class="badge">📅 2026年6月最新数据</div>
+  <div class="price-big">¥<span>12.4</span>万起</div>
+  <div class="price-label">1.5T 舒雅型 · 落地参考价</div>
+</div>
+
+<div class="container">
+
+  <!-- Summary -->
+  <div class="card">
+    <h2><span class="icon">📊</span> 核心结论</h2>
+    <div class="summary-box">
+      <div class="big">性价比最高的B级油车之一</div>
+      <p>蒙迪欧1.5T舒雅型落地约 <strong>12.4万</strong>，以A级车价格买B级车，空间动力均在线。但市区油耗偏高（7-8毛/km）、品牌保值率不如日系德系。如果预算能+1.5万，<strong style="color:var(--green)">强烈建议上2.0T豪华</strong>，动力质变。</p>
+    </div>
+  </div>
+
+  <!-- Price Table -->
+  <div class="card">
+    <h2><span class="icon">💰</span> 全系价格一览</h2>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">✅ 全系官方直降 <strong style="color:var(--green)">5.1万元</strong>（2026年5-6月行情）</p>
+    <table>
+      <thead>
+        <tr><th>版本</th><th>指导价</th><th>裸车价</th><th>落地≈</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1.5T 时尚型</td><td style="color:var(--text-dim)">14.98万</td><td class="price-cell">9.88万</td><td class="price-cell">≈11.5万</td></tr>
+        <tr style="background:rgba(52,211,153,0.04)"><td><strong>1.5T 舒雅型 ⭐</strong></td><td style="color:var(--text-dim)">15.78万</td><td class="price-cell green">10.68万</td><td class="price-cell green">≈12.4万</td></tr>
+        <tr><td>1.5T 豪华型</td><td style="color:var(--text-dim)">16.98万</td><td class="price-cell">11.88万</td><td class="price-cell">≈13.7万</td></tr>
+        <tr><td>1.5T E混动豪华型</td><td style="color:var(--text-dim)">18.98万</td><td class="price-cell">13.88万</td><td class="price-cell">≈15.9万</td></tr>
+        <tr style="border-top:2px solid var(--border)"><td><strong>2.0T 豪华型</strong> 🔥</td><td style="color:var(--text-dim)">17.98万</td><td class="price-cell" style="color:var(--amber)">12.88万</td><td class="price-cell" style="color:var(--amber)">≈14.8万</td></tr>
+        <tr><td>2.0T 至尊型</td><td style="color:var(--text-dim)">19.98万</td><td class="price-cell">14.88万</td><td class="price-cell">≈16.9万</td></tr>
+      </tbody>
+    </table>
+    <div class="info-row" style="margin-top:10px;">
+      <span class="info-item">购置税≈裸车÷11.3</span>
+      <span class="info-item">保险≈5,500</span>
+      <span class="info-item">上牌≈500</span>
+    </div>
+  </div>
+
+  <!-- Real Transaction Prices -->
+  <div class="card">
+    <h2><span class="icon">🎯</span> 评论区真实成交价</h2>
+    <table>
+      <thead><tr><th>版本</th><th>成交价</th><th>地区</th><th>时间</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td>1.5T 舒雅</td><td class="price-cell green"><strong>13.4万</strong></td><td>湖南</td><td>2026-06</td><td>落地，车商报价</td></tr>
+        <tr><td>1.5T 舒雅</td><td class="price-cell green"><strong>≈12万+</strong></td><td>湖南</td><td>2026-06</td><td>评论区车主预估</td></tr>
+        <tr><td>1.5T 豪华</td><td class="price-cell">14.3万</td><td>江苏</td><td>2025-10</td><td>贷款，等车中</td></tr>
+        <tr><td>1.5T 豪华</td><td class="price-cell">14.2万</td><td>贵州</td><td>2025-10</td><td>落地（车主自称"大冤种"）</td></tr>
+        <tr><td>2.0T 豪华</td><td class="price-cell">16.0万</td><td>未标注</td><td>2025-03</td><td>全款（含教师优惠2000）</td></tr>
+        <tr><td>2.0T 豪华</td><td class="price-cell">15.0万</td><td>未标注</td><td>2025-03</td><td>贷款（含教师优惠）</td></tr>
+        <tr><td>2.0T 豪华</td><td class="price-cell">16.2万</td><td>安徽</td><td>2025-04</td><td>全款</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:10px;">
+      📌 注意：2026年5月全系官降5.1万后，当前价格比上述历史成交更低。标注"大冤种"的车主是官降前入手的。
+    </p>
+  </div>
+
+  <!-- Guangdong -->
+  <div class="card">
+    <h2><span class="icon">📍</span> 广东地区行情</h2>
+    <table>
+      <thead><tr><th>城市</th><th>情况</th></tr></thead>
+      <tbody>
+        <tr><td><strong>广州</strong></td><td>可享5.1万优惠，但⚠️<b>新购补贴各区上线时间不同</b>（天河基本抢不到、番禺疑似未放券），购车前务必确认所在区补贴状态</td></tr>
+        <tr><td><strong>深圳</strong></td><td>热门城市，5.1万优惠到位，补贴相对稳定</td></tr>
+        <tr><td><strong>东莞</strong></td><td>有车主反馈东莞南城贷款优惠5万、全款优惠4万（去年数据），今年优惠更大</td></tr>
+        <tr><td><strong>佛山</strong></td><td>全国覆盖城市，参考全系统一优惠</td></tr>
+      </tbody>
+    </table>
+    <div class="alert alert-warn" style="margin-top:10px;">
+      ⚠️ 广州新购补贴各区时间不一：全市原定5月1日上线，后改为各区单独上线。从化南沙已上线，天河番禺疑似未放。实际购车需确认区补贴生效后再下单。
+    </div>
+  </div>
+
+  <!-- Pros & Cons -->
+  <div class="card">
+    <h2><span class="icon">⚖️</span> 优缺点（真实车主反馈）</h2>
+    <div class="pros-cons">
+      <div class="box pro-box">
+        <div class="box-title">✅ 优点</div>
+        <ul>
+          <li><strong>空间王</strong> — 2945mm轴距，B级空间天花板</li>
+          <li><strong>动力够用</strong> — 1.5T 190匹，家用绰绰有余</li>
+          <li><strong>车身扎实</strong> — 高强度钢，安全性好</li>
+          <li><strong>加92粗粮</strong> — 不挑油，养护成本低</li>
+          <li><strong>外观帅气</strong> — 美式肌肉风，1.1米大屏吸睛</li>
+          <li><strong>高速省油</strong> — 匀速100km/h约5L/100km</li>
+          <li><strong>开着舒服</strong> — 车主共识：很好开</li>
+        </ul>
+      </div>
+      <div class="box con-box">
+        <div class="box-title">❌ 缺点</div>
+        <ul>
+          <li><strong>市区油耗高</strong> — 7-8毛/km，日系5-6毛</li>
+          <li><strong>胎噪明显</strong> — 后排更突出，仅前排夹胶玻璃</li>
+          <li><strong>1.5T起步肉</strong> — 扭矩差距明显，发动机声大</li>
+          <li><strong>车机一般</strong> — 老款卡顿，26款已改善</li>
+          <li><strong>实体键少</strong> — 空调必须点屏幕/语音</li>
+          <li><strong>底盘偏硬</strong> — 过坑反馈明显</li>
+          <li><strong>保值率低</strong> — 福特品牌销量差</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Version Comparison -->
+  <div class="card">
+    <h2><span class="icon">📋</span> 版本对比 & 选购建议</h2>
+
+    <div class="version-grid">
+      <div class="version-item">
+        <div class="vi-left">
+          <div class="vi-name">1.5T 时尚型</div>
+          <div class="vi-desc">丐版，够用就行</div>
+        </div>
+        <div class="vi-right">
+          <div class="vi-price">9.88万</div>
+          <div class="vi-sub">落地≈11.5万</div>
+        </div>
+      </div>
+
+      <div class="version-item recommended">
+        <div class="vi-left">
+          <div class="vi-name">1.5T 舒雅型 ⭐</div>
+          <div class="vi-desc">性价比之王，核心配置齐全</div>
+        </div>
+        <div class="vi-right">
+          <div class="vi-price" style="color:var(--green)">10.68万</div>
+          <div class="vi-sub">落地≈12.4万</div>
+        </div>
+      </div>
+
+      <div class="version-item">
+        <div class="vi-left">
+          <div class="vi-name">1.5T 豪华型</div>
+          <div class="vi-desc">+27寸大屏 +L2辅助驾驶</div>
+        </div>
+        <div class="vi-right">
+          <div class="vi-price">11.88万</div>
+          <div class="vi-sub">落地≈13.7万</div>
+        </div>
+      </div>
+
+      <div class="version-item">
+        <div class="vi-left">
+          <div class="vi-name">1.5T E混动豪华型</div>
+          <div class="vi-desc">省油之选，油耗减半</div>
+        </div>
+        <div class="vi-right">
+          <div class="vi-price">13.88万</div>
+          <div class="vi-sub">落地≈15.9万</div>
+        </div>
+      </div>
+
+      <div class="version-item" style="border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.03);">
+        <div class="vi-left">
+          <div class="vi-name" style="color:var(--amber)">2.0T 豪华型 🔥</div>
+          <div class="vi-desc">245匹 + 8AT，动力质变</div>
+        </div>
+        <div class="vi-right">
+          <div class="vi-price" style="color:var(--amber)">12.88万</div>
+          <div class="vi-sub">落地≈14.8万</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:16px;">🎯 我的建议</h3>
+    <table>
+      <thead><tr><th>需求</th><th>推荐版本</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>预算最省</td><td style="color:var(--green);font-weight:700;">1.5T 舒雅型 ⭐</td><td>落地12.4万，该有的都有</td></tr>
+        <tr><td>要大屏+智驾</td><td>1.5T 豪华型</td><td>27寸屏+L2辅助，落地13.7万</td></tr>
+        <tr><td>省油党</td><td>1.5T E混动豪华型</td><td>油耗减半，但贵2万</td></tr>
+        <tr><td>动力党 🔥</td><td style="color:var(--amber);font-weight:700;">2.0T 豪华型</td><td>+1.5万换245匹，不后悔</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Owner Voices -->
+  <div class="card">
+    <h2><span class="icon">💬</span> 车主真实声音</h2>
+    <div class="quote">
+      <strong>「开了大半年了，好后悔啊！扭矩差太多了，起步很肉。油耗没区别，1.5t发动机声音是真的大。」</strong><br>
+      —— 1.5T车主，江西，2026-01
+    </div>
+    <div class="quote">
+      <strong>「怕后悔直接上了顶配」</strong><br>
+      —— 广东车主
+    </div>
+    <div class="quote">
+      <strong>「有一说一，2.0T，跑高速运动模式是真舒服」</strong><br>
+      —— 广东车主
+    </div>
+    <div class="quote">
+      <strong>「蒙迪欧开起来真舒服，选择不后悔」</strong><br>
+      —— 四川车主
+    </div>
+    <div class="quote">
+      <strong>「如果只在这俩里选的话我会选福特。载具的第一要义是安全，我宁愿壳子厚油耗高点」</strong><br>
+      —— 江苏车主（对比凯美瑞）
+    </div>
+    <div class="quote">
+      <strong>「开三年了，非常满意！」</strong><br>
+      —— 四川车主
+    </div>
+  </div>
+
+  <!-- Buying Guide -->
+  <div class="card">
+    <h2><span class="icon">🗺️</span> 适合 & 不适合谁</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="padding:14px;border-radius:10px;background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);">
+        <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:6px;">✅ 适合</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="font-size:13px;padding:3px 0;">• 预算12-14万想买B级车</li>
+          <li style="font-size:13px;padding:3px 0;">• 看重空间和安全性的家庭</li>
+          <li style="font-size:13px;padding:3px 0;">• 喜欢美系风格</li>
+          <li style="font-size:13px;padding:3px 0;">• 高速路况多</li>
+        </ul>
+      </div>
+      <div style="padding:14px;border-radius:10px;background:rgba(248,113,113,0.06);border:1px solid rgba(248,113,113,0.15);">
+        <div style="font-size:14px;font-weight:700;color:var(--red);margin-bottom:6px;">❌ 不适合</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="font-size:13px;padding:3px 0;">• 极度在意油耗的人</li>
+          <li style="font-size:13px;padding:3px 0;">• 在意保值率的人</li>
+          <li style="font-size:13px;padding:3px 0;">• 追求智能化体验</li>
+          <li style="font-size:13px;padding:3px 0;">• 纯市区通勤为主</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Source Links -->
+  <div class="card">
+    <h2><span class="icon">🔗</span> 数据来源</h2>
+    <p style="font-size:13px;color:var(--text-dim);">以下为小红书社区帖及评论区数据，价格以2026年5-6月为准。</p>
+    <div style="margin-top:10px;font-size:12px;color:var(--text-dim);">
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/6a1ef1a7000000003503a6e8?xsec_token=AB5uBelzcggwgO-BYdlWqYayQQf7xHKxNiPv5xVGE5G4s=">2026款1.5T舒雅版落地价 · 壹壹</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/6a0bc8320000000038020387?xsec_token=ABtW660yN4mbON5rN0Be-BHPI_SF1fi8z-5yckxolhEPE=">蒙迪欧全款落地行情 · 4S店搬砖人阿琳</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/69afbe3a0000000005032987?xsec_token=ABoGFSa-DRbTG_VPRIBGpHH4tPNO2Yq7jcto8uD8bb0Zw=">26款蒙迪欧全版本优缺深测 · 黑虾车神</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/69a63cee000000001503b603?xsec_token=ABCiKLZk7FEdVFvXq_8jIhmKwbA57UuSqO1s9ZI_TuQNw=">买车一年测评蒙迪欧优缺点 · 每子</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/69a52ce1000000000d00afed?xsec_token=ABNsv4AAYUTgD7A-I9gQACqwnf2dxSz9WLCWyFW8wBP60=">试驾蒙迪欧优缺点太明显 · Carmen爱开车</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/68e8556600000000040228a4?xsec_token=ABvSRtxdTS0wO0guLnH_8oc3nc22JvBoi5_UhFNScpEn0=">有1.5t后悔没上2.0t的吗？· 要加油哦</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/6a17902d000000000702f1e7?xsec_token=ABIX3wJSctnPq89luGnQR73qaPAMkilCP-MKttZl14UCQ=">广州新购补贴恶心人 · 鹅仔</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/67c84559000000000900c9ec?xsec_token=ABmPcf7sz8k8F9dUMLrCD4jKicTS7dSEjMyvW05sPUO2k=">一分钟看福特蒙迪欧不同版本区别 · 肉猴儿说车</a></div>
+      <div style="padding:4px 0;">• <a class="source-link" href="https://www.xiaohongshu.com/explore/67e26295000000000602aae5?xsec_token=ABMgmHueBl13GXGDivMvF7Il1nNP8IAOt1ipcjo1ueDbA=">15w拿下蒙迪欧！和销售对线技巧 · 小华</a></div>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+      ⚠️ 以上链接含xsec_token，有有效期。如打不开请重新搜索。<br>
+      价格仅供参考，实际以4S店报价为准。建议多店比价。
+    </p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>由 Hermes Agent 自动生成 · 数据来源：小红书社区</p>
+  <p>© 2026 福特蒙迪欧1.5T调研报告</p>
+</div>
+
+</body>
+</html>
