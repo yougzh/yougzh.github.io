@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 架构深度调研报告 · 2025-2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0b0d12;
+    --surface: #13161e;
+    --surface2: #1a1e2a;
+    --border: #232836;
+    --text: #c9d1d9;
+    --text-secondary: #8b949e;
+    --text-muted: #5c6370;
+    --accent: #58a6ff;
+    --accent-dim: #1f6feb;
+    --green: #3fb950;
+    --red: #f85149;
+    --orange: #d2991d;
+    --purple: #a371f7;
+    --cyan: #39d2c0;
+    --width: 1100px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* ── Hero ─────────────────────── */
+  .hero {
+    border-bottom: 1px solid var(--border);
+    padding: 80px 0 60px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #f0f6fc;
+    margin-bottom: 12px;
+  }
+  .hero .sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+  .hero .badges {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .badge {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--surface2);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .badge.green  { color: var(--green); border-color: #1a3a22; }
+  .badge.blue   { color: var(--accent); border-color: #1a2d4a; }
+  .badge.orange { color: var(--orange); border-color: #3a2e1a; }
+  .badge.purple { color: var(--purple); border-color: #2e1a4a; }
+
+  /* ── Nav ──────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(11,13,18,0.88); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: var(--width); margin: 0 auto;
+    display: flex; gap: 4px; padding: 0 32px; overflow-x: auto;
+  }
+  .nav a {
+    display: block; padding: 12px 18px; font-size: 13px; font-weight: 500;
+    color: var(--text-secondary); text-decoration: none; white-space: nowrap;
+    border-bottom: 2px solid transparent; transition: all 0.15s;
+  }
+  .nav a:hover { color: var(--text); border-color: var(--text-muted); }
+  .nav a.active { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Container ────────────────── */
+  .container { max-width: var(--width); margin: 0 auto; padding: 48px 32px 96px; }
+
+  section { margin-bottom: 72px; scroll-margin-top: 60px; }
+
+  h2 {
+    font-size: 26px; font-weight: 700; color: #f0f6fc;
+    margin-bottom: 8px; letter-spacing: -0.3px;
+  }
+  h3 {
+    font-size: 20px; font-weight: 600; color: #e6edf3;
+    margin: 36px 0 10px;
+  }
+  h4 {
+    font-size: 16px; font-weight: 600; color: #e6edf3;
+    margin: 28px 0 8px;
+  }
+
+  .section-desc {
+    color: var(--text-secondary); font-size: 14px; margin-bottom: 28px;
+  }
+
+  /* ── Card ─────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+  }
+  .card-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .card-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .card-dot.blue   { background: var(--accent); }
+  .card-dot.green  { background: var(--green); }
+  .card-dot.orange { background: var(--orange); }
+  .card-dot.purple { background: var(--purple); }
+  .card-dot.cyan   { background: var(--cyan); }
+  .card-dot.red    { background: var(--red); }
+
+  .card h4 { margin: 0; font-size: 17px; }
+  .card p { color: var(--text-secondary); font-size: 13.5px; margin-bottom: 10px; }
+  .card .pros-cons { display: flex; gap: 12px; margin: 10px 0; }
+  .card .tag { font-size: 11px; padding: 2px 10px; border-radius: 12px; font-weight: 500; }
+  .tag.pro  { background: #12261a; color: var(--green); }
+  .tag.con  { background: #2a1218; color: var(--red); }
+
+  .repo-list { margin-top: 12px; }
+  .repo-item {
+    display: flex; align-items: center; gap: 8px; padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 13px;
+  }
+  .repo-item:last-child { border-bottom: none; }
+  .repo-item a {
+    color: var(--accent); text-decoration: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+  }
+  .repo-item a:hover { text-decoration: underline; }
+  .repo-item .stars {
+    color: var(--orange); font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; white-space: nowrap; margin-left: auto;
+  }
+  .repo-item .desc { color: var(--text-muted); font-size: 12px; display: block; margin-top: 1px; }
+
+  /* ── Architecture Diagram ─────── */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 32px;
+    margin: 28px 0;
+    overflow-x: auto;
+  }
+  .arch-diagram svg { display: block; margin: 0 auto; }
+
+  /* ── Comparison Table ─────────── */
+  .table-wrap {
+    overflow-x: auto; margin: 24px 0;
+    border: 1px solid var(--border); border-radius: 10px;
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; min-width: 700px;
+  }
+  th {
+    text-align: left; padding: 12px 16px; font-weight: 600;
+    font-size: 12px; color: var(--text-secondary); background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.3px;
+  }
+  td {
+    padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.015); }
+  td:first-child, th:first-child { padding-left: 20px; }
+  td:last-child, th:last-child { padding-right: 20px; }
+
+  .check { color: var(--green); }
+  .cross { color: var(--red); }
+
+  /* ── Architecture Flow ────────── */
+  .flow-row {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    justify-content: center; margin: 20px 0; font-size: 13px;
+  }
+  .flow-box {
+    padding: 8px 16px; border-radius: 6px; font-weight: 500;
+    border: 1px solid; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+
+  /* ── TOC ──────────────────────── */
+  .toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 28px 32px; margin-bottom: 48px;
+  }
+  .toc h3 { margin-top: 0; margin-bottom: 16px; font-size: 16px; color: var(--text-secondary); }
+  .toc ol { columns: 2; column-gap: 40px; padding-left: 20px; }
+  .toc li { margin-bottom: 6px; font-size: 13px; }
+  .toc li a { color: var(--accent); text-decoration: none; }
+  .toc li a:hover { text-decoration: underline; }
+
+  /* ── Footer ───────────────────── */
+  .footer {
+    text-align: center; padding: 40px 0;
+    color: var(--text-muted); font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Responsive ───────────────── */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 26px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .toc ol { columns: 1; }
+  }
+
+  /* ── Print ────────────────────── */
+  @media print {
+    body { background: #fff; color: #000; }
+    .nav { display: none; }
+    .card { background: #f5f5f5; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ Hero ═══════════════════════════════════ -->
+<header class="hero">
+  <h1>AI Agent 架构深度调研报告</h1>
+  <p class="sub">Architecture · Memory &amp; Context · RAG — 2025-2026 全景式技术综述</p>
+  <div class="badges">
+    <span class="badge blue">15 种架构方案</span>
+    <span class="badge green">30+ 开源项目</span>
+    <span class="badge orange">多维度对比</span>
+    <span class="badge purple">含 GitHub 仓库</span>
+  </div>
+</header>
+
+<!-- ═══ Nav ════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#toc">目录</a>
+    <a href="#sec-arch">1. Agent 架构</a>
+    <a href="#sec-memory">2. 记忆与上下文</a>
+    <a href="#sec-rag">3. RAG 方案</a>
+    <a href="#sec-compare">4. 综合对比</a>
+    <a href="#sec-trends">5. 趋势</a>
+    <a href="#sec-agents-compare">6. 主流Agent对比</a>
+  </div>
+</nav>
+
+<!-- ═══ Main ═══════════════════════════════════ -->
+<div class="container">
+
+<!-- ── TOC ───────────────────────────────────── -->
+<section id="toc">
+  <div class="toc">
+    <h3>报告目录</h3>
+    <ol>
+      <li><a href="#sec-arch">Agent 架构方案</a> — ReAct / Plan-Execute / Multi-Agent / Tool-use / Cognitive</li>
+      <li><a href="#sec-memory">记忆与上下文管理</a> — 短期 / 长期 / 混合 / 优化 / 外部工具</li>
+      <li><a href="#sec-rag">RAG 实现方案</a> — Naive / Advanced / Agentic / Graph / Hybrid</li>
+      <li><a href="#sec-compare">综合横向对比</a> — 架构选型决策矩阵 + 技术栈组合</li>
+      <li><a href="#sec-trends">2025-2026 趋势研判</a></li>
+      <li><a href="#sec-agents-compare">主流Agent横向对比</a> — Hermes / Codex CLI / Claude Code</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ═══  1. Agent 架构  ══════════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="sec-arch">
+  <h2>1. AI Agent 架构方案</h2>
+  <p class="section-desc">2025-2026 年，Agent 架构不再是"选一种就行"，而是多种模式融合。以下是五类核心架构范式的深度分析。</p>
+
+  <!-- 架构总览图 -->
+  <div class="arch-diagram">
+    <svg viewBox="0 0 960 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#58a6ff"/>
+        </marker>
+      </defs>
+      <rect width="960" height="240" rx="8" fill="#0b0d12"/>
+      <!-- ReAct -->
+      <rect x="20" y="20" width="170" height="90" rx="6" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="105" y="58" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="JetBrains Mono,monospace" font-weight="600">ReAct Loop</text>
+      <text x="105" y="78" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Think→Act→Observe</text>
+      <text x="105" y="96" text-anchor="middle" fill="#39d2c0" font-size="9" font-family="JetBrains Mono,monospace">LangGraph · SWE-agent</text>
+      <!-- Plan-Execute -->
+      <rect x="210" y="20" width="170" height="90" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="295" y="58" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="JetBrains Mono,monospace" font-weight="600">Plan-Execute</text>
+      <text x="295" y="78" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Plan→Step-by-Step→Done</text>
+      <text x="295" y="96" text-anchor="middle" fill="#3fb950" font-size="9" font-family="JetBrains Mono,monospace">STORM · GPT-Researcher</text>
+      <!-- Multi-Agent -->
+      <rect x="400" y="20" width="170" height="90" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="485" y="58" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="JetBrains Mono,monospace" font-weight="600">Multi-Agent</text>
+      <text x="485" y="78" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Swarm · Hierarchy · Collab</text>
+      <text x="485" y="96" text-anchor="middle" fill="#a371f7" font-size="9" font-family="JetBrains Mono,monospace">AutoGen · MetaGPT · CrewAI</text>
+      <!-- Tools -->
+      <rect x="590" y="20" width="170" height="90" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="675" y="58" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="JetBrains Mono,monospace" font-weight="600">Tool-Use / FC</text>
+      <text x="675" y="78" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">JSON Schema→Tool Call</text>
+      <text x="675" y="96" text-anchor="middle" fill="#d2991d" font-size="9" font-family="JetBrains Mono,monospace">LangChain · Litellm · MCP</text>
+      <!-- Cognitive -->
+      <rect x="780" y="20" width="160" height="90" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="860" y="58" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="JetBrains Mono,monospace" font-weight="600">Cognitive</text>
+      <text x="860" y="78" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Soar · ACT-R · MemGPT</text>
+      <text x="860" y="96" text-anchor="middle" fill="#fb7185" font-size="9" font-family="JetBrains Mono,monospace">Mem0 · Letta · Voyager</text>
+
+      <!-- Bottom: Fusion -->
+      <rect x="200" y="140" width="560" height="70" rx="6" fill="rgba(88,166,255,0.08)" stroke="#58a6ff" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="480" y="172" text-anchor="middle" fill="#58a6ff" font-size="14" font-family="Noto Sans SC,sans-serif" font-weight="600">2026 融合趋势: 现代 Agent 框架同时使用 2-3 种架构模式</text>
+      <text x="480" y="194" text-anchor="middle" fill="#8b949e" font-size="11" font-family="Noto Sans SC,sans-serif">LangGraph (ReAct+Plan-Execute) · AutoGen (Multi-Agent+Tool-use) · Letta (Cognitive+Tool-use)</text>
+    </svg>
+  </div>
+
+  <div class="card-grid">
+
+  <!-- ReAct -->
+  <div class="card">
+    <div class="card-header"><div class="card-dot cyan"></div><h4>1.1 ReAct 循环架构</h4></div>
+    <p>Thought → Action → Observation 交替进行，形成闭环推理。LangGraph 将此抽象为有向状态图（DAG），支持循环、条件分支和并行。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 可解释性强</span>
+      <span class="tag pro">✓ 错误可恢复</span>
+      <span class="tag con">✕ Token 消耗大</span>
+      <span class="tag con">✕ 长任务退化</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/langchain-ai/langgraph" target="_blank">langchain-ai/langgraph</a><span class="stars">⭐ 36,702</span></div>
+      <div class="repo-item"><a href="https://github.com/run-llama/llama_index" target="_blank">run-llama/llama_index</a><span class="stars">⭐ 50,704</span></div>
+      <div class="repo-item"><a href="https://github.com/SWE-agent/SWE-agent" target="_blank">SWE-agent/SWE-agent</a><span class="stars">⭐ 19,724</span></div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:var(--text-muted)">论文: Yao et al., "ReAct: Synergizing Reasoning and Acting in Language Models", ICLR 2023</p>
+  </div>
+
+  <!-- Plan-Execute -->
+  <div class="card">
+    <div class="card-header"><div class="card-dot green"></div><h4>1.2 Plan-and-Execute</h4></div>
+    <p>先规划后执行：Planner 生成完整计划 → Executor 逐步执行 → 可选 Replan。适合长篇写作、深度研究等需要全局规划的场景。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 全局最优</span>
+      <span class="tag pro">✓ 结构化输出</span>
+      <span class="tag con">✕ 灵活性差</span>
+      <span class="tag con">✕ 初始偏差传播</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/stanford-oval/storm" target="_blank">stanford-oval/storm</a><span class="stars">⭐ 29,887</span></div>
+      <div class="repo-item"><a href="https://github.com/assafelovic/gpt-researcher" target="_blank">assafelovic/gpt-researcher</a><span class="stars">⭐ 28,133</span></div>
+      <div class="repo-item"><a href="https://github.com/Codium-ai/AlphaCodium" target="_blank">Codium-ai/AlphaCodium</a><span class="stars">⭐ 3,946</span></div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:var(--text-muted)">STORM: Shao et al., NAACL 2024 · AlphaCodium: Codeforces 基准</p>
+  </div>
+
+  <!-- Multi-Agent -->
+  <div class="card">
+    <div class="card-header"><div class="card-dot purple"></div><h4>1.3 Multi-Agent 协作</h4></div>
+    <p>多个专业化 Agent 通过通信协作。三种模式：Swarm（涌现）、Hierarchical（层级 GroupChat）、Collaborative（SOP 角色扮演）。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 专业化分工</span>
+      <span class="tag pro">✓ 高鲁棒性</span>
+      <span class="tag con">✕ 通信开销大</span>
+      <span class="tag con">✕ 协调困难</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/microsoft/autogen" target="_blank">microsoft/autogen</a><span class="stars">⭐ 59,552</span></div>
+      <div class="repo-item"><a href="https://github.com/crewAIInc/crewAI" target="_blank">crewAIInc/crewAI</a><span class="stars">⭐ 55,076</span></div>
+      <div class="repo-item"><a href="https://github.com/geekan/MetaGPT" target="_blank">geekan/MetaGPT</a><span class="stars">⭐ 69,243</span></div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:var(--text-muted)">MetaGPT: Hong et al., ICLR 2024 · AutoGen: Wu et al., 2023</p>
+  </div>
+
+  <!-- Tool-use -->
+  <div class="card">
+    <div class="card-header"><div class="card-dot orange"></div><h4>1.4 Tool-use / Function Calling</h4></div>
+    <p>LLM 识别何时调用外部工具，以 JSON Schema 输出函数调用。OpenAI / Anthropic / Google 已形成事实标准，MCP 协议正在统一工具通信。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 扩展能力边界</span>
+      <span class="tag pro">✓ API 标准化</span>
+      <span class="tag con">✕ 幻觉风险</span>
+      <span class="tag con">✕ 安全风险</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/langchain-ai/langchain" target="_blank">langchain-ai/langchain</a><span class="stars">⭐ ~141K</span></div>
+      <div class="repo-item"><a href="https://github.com/openinterpreter/open-interpreter" target="_blank">openinterpreter/open-interpreter</a><span class="stars">⭐ 64,296</span></div>
+      <div class="repo-item"><a href="https://github.com/BerriAI/litellm" target="_blank">BerriAI/litellm</a><span class="stars">⭐ 52,859</span></div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:var(--text-muted)">论文: Schick et al., "Toolformer", NeurIPS 2023 · Gorilla, ICML 2024</p>
+  </div>
+
+  <!-- Cognitive -->
+  <div class="card">
+    <div class="card-header"><div class="card-dot red"></div><h4>1.5 认知架构</h4></div>
+    <p>模拟人脑认知过程：工作记忆 + 长期记忆 + 目标系统 + 注意力。Soar (MIT)、ACT-R (CMU) 为经典，现代变体如 Letta (虚拟 OS 记忆)、Generative Agents。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 理论严谨</span>
+      <span class="tag pro">✓ 记忆系统完善</span>
+      <span class="tag con">✕ 实现复杂</span>
+      <span class="tag con">✕ 与 LLM 范式存在张力</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/mem0ai/mem0" target="_blank">mem0ai/mem0</a><span class="stars">⭐ ~25K</span></div>
+      <div class="repo-item"><a href="https://github.com/letta-ai/letta" target="_blank">letta-ai/letta</a> (原 MemGPT)<span class="stars">⭐ ~14K</span></div>
+      <div class="repo-item"><a href="https://github.com/joonspk-research/generative_agents" target="_blank">joonspk-research/generative_agents</a></div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:var(--text-muted)">Park et al., "Generative Agents", UIST 2023 · Packer et al., "MemGPT", NeurIPS 2024</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ═══  2. Memory & Context  ═══════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="sec-memory">
+  <h2>2. 记忆与上下文管理</h2>
+  <p class="section-desc">记忆是 Agent 从"一次性工具"进化为"持久化助手"的关键。以下覆盖短期、长期、混合、优化、外部工具五大领域。</p>
+
+  <h3>2.1 短期/工作记忆</h3>
+  <div class="card-grid">
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot cyan"></div><h4>滑动窗口 (Sliding Window)</h4></div>
+    <p>仅保留最近 N 轮对话 / K 个 token，超出直接丢弃。实现极简，零额外开销。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 零延迟</span>
+      <span class="tag pro">✓ 零成本</span>
+      <span class="tag con">✕ 丢失早期信息</span>
+      <span class="tag con">✕ 无法跨多轮连贯</span>
+    </div>
+    <p style="font-size:11px;color:var(--text-muted)">LangChain ConversationBufferWindowMemory · LlamaIndex ChatMemoryBuffer</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot green"></div><h4>摘要记忆 (Summarization)</h4></div>
+    <p>历史超出窗口时，调用 LLM 生成摘要替代原始内容。保留语义精髓，但可能丢失细节。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 语义保留</span>
+      <span class="tag pro">✓ Token 节省</span>
+      <span class="tag con">✕ 额外 LLM 调用</span>
+      <span class="tag con">✕ 细节可能丢失</span>
+    </div>
+    <p style="font-size:11px;color:var(--text-muted)">LangChain ConversationSummaryMemory · LangGraph MemorySaver</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot orange"></div><h4>结构化工作记忆 (Scratchpad)</h4></div>
+    <p>给 Agent 提供"草稿纸"区域，记录推理步骤、子目标、中间结果。AutoGPT / BabyAGI 经典模式。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 推理透明</span>
+      <span class="tag pro">✓ 子目标追踪</span>
+      <span class="tag con">✕ 占用上下文</span>
+      <span class="tag con">✕ 需人工设计结构</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank">Significant-Gravitas/AutoGPT</a><span class="stars">⭐ ~172K</span></div>
+      <div class="repo-item"><a href="https://github.com/yoheinakajima/babyagi" target="_blank">yoheinakajima/babyagi</a><span class="stars">⭐ ~20K</span></div>
+    </div>
+  </div>
+
+  </div>
+
+  <h3>2.2 长期记忆</h3>
+  <div class="card-grid">
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot blue"></div><h4>向量存储 / 语义记忆</h4></div>
+    <p>文本 → Embedding → 向量数据库，通过语义相似度检索。支持海量条目，模糊匹配。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 语义检索</span>
+      <span class="tag pro">✓ 海量可扩展</span>
+      <span class="tag con">✕ Embedding 成本</span>
+      <span class="tag con">✕ Chunking 需调优</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/chroma-core/chroma" target="_blank">chroma-core/chroma</a><span class="stars">⭐ 28,721</span></div>
+      <div class="repo-item"><a href="https://github.com/qdrant/qdrant" target="_blank">qdrant/qdrant</a> (Rust, 混合搜索)</div>
+      <div class="repo-item"><a href="https://github.com/milvus-io/milvus" target="_blank">milvus-io/milvus</a> (十亿级)</div>
+      <div class="repo-item"><a href="https://github.com/facebookresearch/faiss" target="_blank">facebookresearch/faiss</a> (极限性能)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot purple"></div><h4>情景记忆 (Episodic)</h4></div>
+    <p>记录 Agent 的具体"经历"（何时、何事、何果），用于"从经验中学习"。Voyager 在 Minecraft 中实现终身学习。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 从经验学习</span>
+      <span class="tag pro">✓ 自动 Few-shot</span>
+      <span class="tag con">✕ 经验提取 pipeline 复杂</span>
+      <span class="tag con">✕ 存储线性增长</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/MineDojo/Voyager" target="_blank">MineDojo/Voyager</a> (Minecraft 终身学习)</div>
+      <div class="repo-item"><a href="https://github.com/joonspk-research/generative_agents" target="_blank">Generative Agents</a> (Stanford 小镇)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot orange"></div><h4>知识图谱记忆 (KG)</h4></div>
+    <p>实体-关系三元组存储，支持精确符号推理和多跳查询。Cognee 实现图谱+向量融合。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 精确关系推理</span>
+      <span class="tag pro">✓ 多跳查询</span>
+      <span class="tag con">✕ 三元组提取成本高</span>
+      <span class="tag con">✕ 构建维护复杂</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/topoteretes/cognee" target="_blank">topoteretes/cognee</a> (图谱+向量融合)</div>
+      <div class="repo-item"><a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain GraphCypherQAChain</a></div>
+    </div>
+  </div>
+
+  </div>
+
+  <h3>2.3 混合记忆 — MemGPT / Letta (OS 风格)</h3>
+  <div class="arch-diagram">
+    <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#a371f7"/>
+        </marker>
+      </defs>
+      <rect width="800" height="160" rx="8" fill="#0b0d12"/>
+      <!-- RAM -->
+      <rect x="40" y="25" width="320" height="110" rx="6" fill="rgba(8,51,68,0.35)" stroke="#58a6ff" stroke-width="1.5"/>
+      <text x="200" y="50" text-anchor="middle" fill="#58a6ff" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">LLM 上下文窗口 (RAM)</text>
+      <text x="200" y="72" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">系统指令 + 工作记忆 + 召回记忆块</text>
+      <text x="200" y="92" text-anchor="middle" fill="#39d2c0" font-size="10" font-family="JetBrains Mono,monospace">LLM 自主调用: conversation_search / memory_insert</text>
+      <text x="200" y="112" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">分页机制：超窗口对话自动归档，按需召回</text>
+      <!-- Arrows -->
+      <line x1="360" y1="60" x2="440" y2="60" stroke="#a371f7" stroke-width="1.5" marker-end="url(#arrowM)"/>
+      <line x1="440" y1="100" x2="360" y2="100" stroke="#a371f7" stroke-width="1.5" marker-end="url(#arrowM)"/>
+      <!-- Disk -->
+      <rect x="440" y="25" width="320" height="110" rx="6" fill="rgba(76,29,149,0.3)" stroke="#a371f7" stroke-width="1.5"/>
+      <text x="600" y="50" text-anchor="middle" fill="#a371f7" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">外部持久存储 (Disk)</text>
+      <text x="600" y="72" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">对话存档 · 长期记忆 · 情景记忆</text>
+      <text x="600" y="92" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Agent 可主动写入 / 更新 / 删除</text>
+      <text x="600" y="112" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">理论上无限长对话</text>
+    </svg>
+  </div>
+  <div class="card-grid" style="margin-top: 16px;">
+    <div class="card">
+      <div class="card-header"><div class="card-dot purple"></div><h4>Letta (原 MemGPT)</h4></div>
+      <p>借鉴操作系统虚拟内存管理：LLM 上下文 = RAM，外部存储 = Disk。Agent 自主决定何时换出/加载记忆。2024年商业化后核心框架仍开源。</p>
+      <div class="pros-cons">
+        <span class="tag pro">✓ 突破窗口限制</span>
+        <span class="tag pro">✓ 跨会话持久化</span>
+        <span class="tag con">✕ 额外 LLM 调用</span>
+        <span class="tag con">✕ 召回可能不完整</span>
+      </div>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/letta-ai/letta" target="_blank">letta-ai/letta</a><span class="stars">⭐ ~14K</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Mem0 — Agent 记忆层</h4></div>
+      <p>专为 Agent 设计的智能记忆层。自动提取偏好/事实，多级记忆（用户/会话/Agent），支持去重、更新、时间衰减、图记忆。</p>
+      <div class="pros-cons">
+        <span class="tag pro">✓ 自动记忆管理</span>
+        <span class="tag pro">✓ 少量代码集成</span>
+        <span class="tag con">✕ 托管版有成本</span>
+        <span class="tag con">✕ 封装度高</span>
+      </div>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/mem0ai/mem0" target="_blank">mem0ai/mem0</a><span class="stars">⭐ ~25K</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>2.4 上下文窗口优化</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Token 压缩</h4></div>
+      <p>Microsoft LLMLingua 用小模型有损压缩提示词，LongLLMLingua 支持超长上下文。最高压缩至 1/20。</p>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/microsoft/LLMLingua" target="_blank">microsoft/LLMLingua</a></div>
+        <div class="repo-item"><a href="https://github.com/liuy967/selective_context" target="_blank">liuy967/selective_context</a></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot orange"></div><h4>上下文缓存</h4></div>
+      <p>Anthropic Prompt Caching 省 90% 成本、Google Context Caching、vLLM APC 复用 KV Cache。无损优化，显著降低首 Token 延迟。</p>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/vllm-project/vllm" target="_blank">vllm-project/vllm</a> (APC)</div>
+        <div class="repo-item"><a href="https://github.com/sgl-project/sglang" target="_blank">sgl-project/sglang</a> (RadixAttention)</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot cyan"></div><h4>结构化提示</h4></div>
+      <p>DSPy (Stanford) 自动优化提示词结构，Guidance (Microsoft) 提供约束生成。XML/JSON 语义分块 + 位置感知。</p>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/stanfordnlp/dspy" target="_blank">stanfordnlp/dspy</a></div>
+        <div class="repo-item"><a href="https://github.com/guidance-ai/guidance" target="_blank">guidance-ai/guidance</a></div>
+        <div class="repo-item"><a href="https://github.com/jxnl/instructor" target="_blank">jxnl/instructor</a> (Pydantic 约束)</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>2.5 外部记忆工具</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Zep — 企业级记忆</h4></div>
+      <p>Agent 长期记忆服务，对话历史 + 用户事实 + 摘要持久化。自部署 (Docker) 或云托管，支持 MCP。</p>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/getzep/zep" target="_blank">getzep/zep</a></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Chroma — 轻量向量库</h4></div>
+      <p>AI 原生嵌入数据库，嵌入式/CS 双模式，内置 Embedding，5 分钟上手。</p>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/chroma-core/chroma" target="_blank">chroma-core/chroma</a><span class="stars">⭐ 28,721</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot orange"></div><h4>Redis Stack</h4></div>
+      <p>高并发低延迟向量搜索，适合生产环境。LanceDB 则为无服务器/边缘场景的替代方案。</p>
+      <div class="repo-list">
+        <div class="repo-item"><a href="https://github.com/redis/redis" target="_blank">redis/redis</a> (含向量搜索)</div>
+        <div class="repo-item"><a href="https://github.com/lancedb/lancedb" target="_blank">lancedb/lancedb</a> (无服务器)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ═══  3. RAG  ═════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="sec-rag">
+  <h2>3. RAG 实现方案</h2>
+  <p class="section-desc">检索增强生成已经从"一个 pipeline"进化为"一套方法论"。以下是五类 RAG 范式的深度对比。</p>
+
+  <div class="arch-diagram">
+    <svg viewBox="0 0 960 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- Evolution path -->
+      <rect x="10" y="15" width="175" height="70" rx="6" fill="rgba(8,51,68,0.35)" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="97" y="48" text-anchor="middle" fill="#c9d1d9" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">Naive RAG</text>
+      <text x="97" y="68" text-anchor="middle" fill="#8b949e" font-size="9">Chunk→Embed→Search→Gen</text>
+      <text x="195" y="52" fill="#39d2c0" font-size="18">→</text>
+      <rect x="215" y="15" width="175" height="70" rx="6" fill="rgba(6,78,59,0.35)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="302" y="48" text-anchor="middle" fill="#c9d1d9" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">Advanced RAG</text>
+      <text x="302" y="68" text-anchor="middle" fill="#8b949e" font-size="9">小→大块 · 重排序 · 窗口</text>
+      <text x="400" y="52" fill="#34d399" font-size="18">→</text>
+      <rect x="420" y="15" width="175" height="70" rx="6" fill="rgba(76,29,149,0.35)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="507" y="48" text-anchor="middle" fill="#c9d1d9" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">Agentic RAG</text>
+      <text x="507" y="68" text-anchor="middle" fill="#8b949e" font-size="9">多步 · 反思 · 自适应路由</text>
+      <text x="605" y="52" fill="#a371f7" font-size="18">→</text>
+      <rect x="625" y="15" width="155" height="70" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="702" y="48" text-anchor="middle" fill="#c9d1d9" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">Graph RAG</text>
+      <text x="702" y="68" text-anchor="middle" fill="#8b949e" font-size="9">KG + 社区检测</text>
+      <text x="790" y="52" fill="#d2991d" font-size="18">+</text>
+      <rect x="805" y="15" width="145" height="70" rx="6" fill="rgba(136,19,55,0.35)" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="877" y="48" text-anchor="middle" fill="#c9d1d9" font-size="12" font-family="JetBrains Mono,monospace" font-weight="600">Hybrid RAG</text>
+      <text x="877" y="68" text-anchor="middle" fill="#8b949e" font-size="9">Dense+Sparse+Re-rank</text>
+    </svg>
+  </div>
+
+  <div class="card-grid">
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot cyan"></div><h4>3.1 Naive RAG (基础)</h4></div>
+    <p>最简单的 RAG 流水线：文档分块 → Embedding → 向量检索 → Top-K 注入 Prompt → LLM 生成。LangChain / LlamaIndex / Chroma 提供开箱即用的实现。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 实现简单</span>
+      <span class="tag pro">✓ 快速上手</span>
+      <span class="tag con">✕ 低召回率</span>
+      <span class="tag con">✕ 块粒度粗</span>
+      <span class="tag con">✕ 无重排序</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/langchain-ai/langchain" target="_blank">langchain-ai/langchain</a><span class="stars">⭐ 141,194</span></div>
+      <div class="repo-item"><a href="https://github.com/run-llama/llama_index" target="_blank">run-llama/llama_index</a><span class="stars">⭐ 50,704</span></div>
+      <div class="repo-item"><a href="https://github.com/chroma-core/chroma" target="_blank">chroma-core/chroma</a><span class="stars">⭐ 28,721</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot green"></div><h4>3.2 Advanced RAG (进阶)</h4></div>
+    <p>小块检索 + 大块生成 (Small-to-Big)、句子窗口检索、自动合并 (Auto-Merging)、重排序 (Rerank)。检索精度大幅提升，但复杂度增加。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 召回精度高</span>
+      <span class="tag pro">✓ 上下文连贯</span>
+      <span class="tag con">✕ 实现复杂度 ↑</span>
+      <span class="tag con">✕ 多步检索延迟 ↑</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/infiniflow/ragflow" target="_blank">infiniflow/ragflow</a><span class="stars">⭐ 84,510</span></div>
+      <div class="repo-item"><a href="https://github.com/run-llama/llama_index" target="_blank">LlamaIndex</a> (SentenceWindowNodeParser)</div>
+      <div class="repo-item"><a href="https://github.com/cohere-ai/cohere-toolkit" target="_blank">cohere-ai/cohere-toolkit</a><span class="stars">⭐ 3,176</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot purple"></div><h4>3.3 Agentic RAG (智能体)</h4></div>
+    <p>RAG + Agent 融合：多步检索（迭代查询）、自我反思 (Self-RAG)、自适应路由（根据问题类型选检索策略）、工具调用。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 复杂查询处理</span>
+      <span class="tag pro">✓ 自我纠错</span>
+      <span class="tag con">✕ Token 消耗极高</span>
+      <span class="tag con">✕ 延迟大</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/langchain-ai/langgraph" target="_blank">langchain-ai/langgraph</a><span class="stars">⭐ 36,702</span></div>
+      <div class="repo-item"><a href="https://github.com/crewAIInc/crewAI" target="_blank">crewAIInc/crewAI</a><span class="stars">⭐ 55,076</span></div>
+      <div class="repo-item"><a href="https://github.com/infiniflow/ragflow" target="_blank">RAGFlow</a> (内置 Agentic 模式)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot orange"></div><h4>3.4 Graph RAG (知识图谱)</h4></div>
+    <p>知识图谱 + RAG：先构建实体-关系图，社区检测提取摘要，图遍历检索相关信息。处理全局性/总结性问题远超传统 RAG。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 全局总结能力</span>
+      <span class="tag pro">✓ 关系推理</span>
+      <span class="tag con">✕ 构建成本极高</span>
+      <span class="tag con">✕ 实时更新困难</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/microsoft/graphrag" target="_blank">microsoft/graphrag</a><span class="stars">⭐ 34,237</span></div>
+      <div class="repo-item"><a href="https://github.com/HKUDS/LightRAG" target="_blank">HKUDS/LightRAG</a> (港大, 轻量)</div>
+      <div class="repo-item"><a href="https://github.com/run-llama/llama_index" target="_blank">LlamaIndex KnowledgeGraphRAG</a></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot red"></div><h4>3.5 Hybrid RAG (混合)</h4></div>
+    <p>稠密向量检索 (Dense) + 稀疏检索/BM25 (Sparse) + 重排序 (RRF/Cross-Encoder)。结合语义理解和关键词匹配，业界最稳健方案。</p>
+    <div class="pros-cons">
+      <span class="tag pro">✓ 兼顾语义+关键词</span>
+      <span class="tag pro">✓ 最稳健</span>
+      <span class="tag con">✕ 多索引维护</span>
+      <span class="tag con">✕ 延迟较高</span>
+    </div>
+    <div class="repo-list">
+      <div class="repo-item"><a href="https://github.com/weaviate/weaviate" target="_blank">weaviate/weaviate</a><span class="stars">⭐ 16,533</span></div>
+      <div class="repo-item"><a href="https://github.com/qdrant/qdrant" target="_blank">qdrant/qdrant</a> (原生混合搜索)</div>
+      <div class="repo-item"><a href="https://github.com/milvus-io/milvus" target="_blank">milvus-io/milvus</a> (多向量字段)</div>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ═══  4. 综合对比  ════════════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="sec-compare">
+  <h2>4. 综合横向对比</h2>
+
+  <h3>4.1 Agent 架构决策矩阵</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>架构</th><th>核心机制</th><th>适用场景</th><th>可解释性</th><th>Token 效率</th><th>复杂度</th><th>头部框架 (Stars)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600">ReAct</td>
+          <td>推理↔行动交替</td>
+          <td>问题求解、代码修复、客服</td>
+          <td class="check">★★★★★</td>
+          <td>★★☆☆☆</td>
+          <td>★★☆☆☆</td>
+          <td>LangGraph 36K, SWE-agent 19K</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Plan-Execute</td>
+          <td>先规划后执行</td>
+          <td>长文生成、深度研究</td>
+          <td>★★★★☆</td>
+          <td class="check">★★★★☆</td>
+          <td>★★☆☆☆</td>
+          <td>STORM 29K, GPT-Researcher 28K</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Multi-Agent</td>
+          <td>多Agent协作</td>
+          <td>软件开发、模拟仿真</td>
+          <td>★★★☆☆</td>
+          <td class="cross">★☆☆☆☆</td>
+          <td class="cross">★★★★★</td>
+          <td>AutoGen 59K, MetaGPT 69K</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Tool-use / FC</td>
+          <td>结构化工具调用</td>
+          <td>API集成、代码执行</td>
+          <td>★★★★☆</td>
+          <td>★★★☆☆</td>
+          <td>★★☆☆☆</td>
+          <td>LangChain 141K, Litellm 52K</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Cognitive</td>
+          <td>模拟人脑认知</td>
+          <td>持续记忆、人格模拟</td>
+          <td class="check">★★★★★</td>
+          <td>★★★☆☆</td>
+          <td class="cross">★★★★★</td>
+          <td>Mem0 25K, Letta 14K</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.2 RAG 方案决策矩阵</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>RAG 方案</th><th>精度</th><th>延迟</th><th>成本</th><th>实现难度</th><th>适合场景</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600">Naive RAG</td>
+          <td>★★★☆☆</td>
+          <td class="check">★★★★★ (快)</td>
+          <td class="check">★ (低)</td>
+          <td class="check">★ (简单)</td>
+          <td>原型验证、简单问答</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Advanced RAG</td>
+          <td>★★★★☆</td>
+          <td>★★★★☆</td>
+          <td>★★</td>
+          <td>★★★</td>
+          <td>企业知识库、客服系统</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Agentic RAG</td>
+          <td class="check">★★★★★</td>
+          <td class="cross">★★☆☆☆ (慢)</td>
+          <td class="cross">★★★★ (高)</td>
+          <td class="cross">★★★★★</td>
+          <td>复杂研究、多步推理</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Graph RAG</td>
+          <td>★★★★☆ (全局)</td>
+          <td>★★★☆☆</td>
+          <td class="cross">★★★★★ (极高)</td>
+          <td class="cross">★★★★★</td>
+          <td>全局总结、关系分析</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Hybrid RAG</td>
+          <td class="check">★★★★★</td>
+          <td>★★★☆☆</td>
+          <td>★★★</td>
+          <td>★★★★</td>
+          <td>生产系统、高精度需求</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.3 推荐技术栈组合</h3>
+  <div class="card-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <h4 style="color:var(--accent);">轻量起步栈</h4>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:0;">
+        LangChain + Chroma + Naive RAG<br>
+        适合: 原型/个人项目/内部工具
+      </p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--green);">
+      <h4 style="color:var(--green);">生产级栈</h4>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:0;">
+        LangGraph + Qdrant + Advanced RAG<br>
+        + Mem0 记忆 + LiteLLM 缓存<br>
+        适合: 企业知识库/客服/内部平台
+      </p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--purple);">
+      <h4 style="color:var(--purple);">前沿探索栈</h4>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:0;">
+        CrewAI/AutoGen + Letta + GraphRAG<br>
+        + Agentic RAG + MCP 工具生态<br>
+        适合: 复杂自治Agent/深度研究
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ═══  5. 趋势  ════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="sec-trends">
+  <h2>5. 2025-2026 关键趋势</h2>
+
+  <div class="card-grid">
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot blue"></div><h4>1. 架构融合</h4></div>
+    <p>现代 Agent 框架不再纯用单一架构。LangGraph 融合了 ReAct + Plan-Execute；AutoGen 融合 Multi-Agent + Tool-use。未来是"混合架构"的时代。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot green"></div><h4>2. MCP 协议标准化</h4></div>
+    <p>Anthropic 推动的 Model Context Protocol 正在成为 Agent-工具通信的事实标准。记忆工具、向量库、API 网关纷纷接入 MCP，工具生态互通时代来临。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot purple"></div><h4>3. OS 化记忆管理</h4></div>
+    <p>MemGPT/Letta 的"LLM 自治记忆"范式成为主流方向。Agent 不再被动接受记忆管理，而是主动决定存储/检索/遗忘。Agent-Native 记忆工具 (Mem0/Cognee) 将取代通用向量库。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot orange"></div><h4>4. Agentic Coding</h4></div>
+    <p>Devin / Cursor / Copilot 将 Agent 架构深度融入 IDE，ReAct 循环成为默认交互模式。MCP 协议让 IDE Agent 可以安全调用文件系统、数据库、API。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot cyan"></div><h4>5. Computer Use / GUI Agent</h4></div>
+    <p>Claude Computer Use、OpenAI Operator 将 Agent 从 API 扩展到 GUI 操作。多模态 + 像素级理解 + 动作空间定义是新的技术高地。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot red"></div><h4>6. Prompt Caching 普及</h4></div>
+    <p>Anthropic / Google / vLLM 的 KV Cache 复用方案将大幅降低 Agent 运行成本（最高省 90%）。无损优化 + 显著降低首 Token 延迟。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot blue"></div><h4>7. 多级记忆融合</h4></div>
+    <p>短期 + 长期 + 情景 + 语义四层记忆架构成为标配。向量存储负责"知道什么"，KG 负责"知道关系"，情景记忆负责"经历过什么"。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-dot green"></div><h4>8. RAG 进入 Agentic 时代</h4></div>
+    <p>RAG 从静态检索升级为动态 Agentic 检索——多步推理 + 自适应路由 + 自我反思 (Self-RAG) + 工具编排。Graph RAG 解决全局性问题，Hybrid RAG 成为生产基线。</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ═══  6. 主流Agent横向对比  ════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="sec-agents-compare">
+  <h2>6. 主流 Agent 横向对比</h2>
+  <p class="section-desc">Hermes Agent (Nous Research) vs Codex CLI (OpenAI) vs Claude Code (Anthropic) — 三大前沿编码 Agent 的架构、工具、记忆、安全全方位对比。</p>
+
+  <h3>6.1 基本盘</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>维度</th><th>Hermes Agent</th><th>Codex CLI</th><th>Claude Code</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">开发者</td><td>Nous Research</td><td>OpenAI</td><td>Anthropic</td></tr>
+        <tr><td style="font-weight:600">语言</td><td>Python</td><td><strong>Rust</strong> (100+ crate workspace)</td><td>TypeScript / Node.js</td></tr>
+        <tr><td style="font-weight:600">开源</td><td class="check">✅ MIT</td><td class="check">✅ Apache-2.0</td><td class="cross">❌ 闭源</td></tr>
+        <tr><td style="font-weight:600">仓库</td><td><a href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch/hermes-agent</a></td><td><a href="https://github.com/openai/codex" target="_blank">openai/codex</a></td><td>—</td></tr>
+        <tr><td style="font-weight:600">定位</td><td>通用 AI Agent (终端 + 多平台)</td><td>纯编码 Agent (TUI + IDE)</td><td>纯编码 Agent (终端 + IDE)</td></tr>
+        <tr><td style="font-weight:600">平台</td><td>CLI · Telegram · Discord · Slack · WhatsApp · 微信 · 飞书 · Signal 等 15+</td><td>TUI · VS Code · Cursor · Windsurf</td><td>VS Code · JetBrains · 终端</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>6.2 架构模式</h3>
+  <div class="arch-diagram">
+    <svg viewBox="0 0 960 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowComp" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+          <path d="M0,0 L7,2.5 L0,5 Z" fill="#58a6ff"/>
+        </marker>
+      </defs>
+      <rect width="960" height="280" rx="8" fill="#0b0d12"/>
+
+      <!-- Hermes -->
+      <rect x="20" y="15" width="290" height="120" rx="8" fill="rgba(88,166,255,0.06)" stroke="#58a6ff" stroke-width="1.5"/>
+      <text x="165" y="42" text-anchor="middle" fill="#58a6ff" font-size="14" font-family="JetBrains Mono,monospace" font-weight="700">Hermes Agent</text>
+      <text x="165" y="62" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">ReAct Loop + Skills 自学习</text>
+      <!-- flow inside -->
+      <rect x="40" y="74" width="48" height="22" rx="4" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1"/>
+      <text x="64" y="89" text-anchor="middle" fill="#22d3ee" font-size="9" font-family="JetBrains Mono,monospace">Think</text>
+      <line x1="88" y1="85" x2="108" y2="85" stroke="#58a6ff" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <rect x="110" y="74" width="48" height="22" rx="4" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="134" y="89" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="JetBrains Mono,monospace">Act</text>
+      <line x1="158" y1="85" x2="178" y2="85" stroke="#58a6ff" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <rect x="180" y="74" width="48" height="22" rx="4" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1"/>
+      <text x="204" y="89" text-anchor="middle" fill="#34d399" font-size="9" font-family="JetBrains Mono,monospace">Observe</text>
+      <!-- loop arrow -->
+      <path d="M228,85 Q250,85 250,70 Q250,55 228,55" fill="none" stroke="#8b949e" stroke-width="0.8" stroke-dasharray="3,2"/>
+      <text x="165" y="118" text-anchor="middle" fill="#8b949e" font-size="9">+ Memory · Skills · cronjob · Gateway</text>
+
+      <!-- Codex -->
+      <rect x="335" y="15" width="290" height="120" rx="8" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="480" y="42" text-anchor="middle" fill="#34d399" font-size="14" font-family="JetBrains Mono,monospace" font-weight="700">Codex CLI</text>
+      <text x="480" y="62" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Session-Thread-Turn 三层 + 多Agent</text>
+      <rect x="355" y="74" width="70" height="22" rx="4" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="390" y="89" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="JetBrains Mono,monospace">ThreadMgr</text>
+      <line x1="425" y1="85" x2="445" y2="85" stroke="#34d399" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <rect x="447" y="74" width="70" height="22" rx="4" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="482" y="89" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="JetBrains Mono,monospace">Thread</text>
+      <line x1="517" y1="85" x2="537" y2="85" stroke="#34d399" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <rect x="539" y="74" width="70" height="22" rx="4" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1"/>
+      <text x="574" y="89" text-anchor="middle" fill="#22d3ee" font-size="9" font-family="JetBrains Mono,monospace">TurnCtx</text>
+      <text x="480" y="118" text-anchor="middle" fill="#8b949e" font-size="9">+ SpawnAgent · Exec-Server · Hook系统</text>
+
+      <!-- Claude Code -->
+      <rect x="650" y="15" width="290" height="120" rx="8" fill="rgba(251,113,133,0.06)" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="795" y="42" text-anchor="middle" fill="#fb7185" font-size="14" font-family="JetBrains Mono,monospace" font-weight="700">Claude Code</text>
+      <text x="795" y="62" text-anchor="middle" fill="#8b949e" font-size="10" font-family="JetBrains Mono,monospace">Brain-Hands 分离 · 三层虚拟化</text>
+      <rect x="670" y="74" width="70" height="22" rx="4" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="705" y="89" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="JetBrains Mono,monospace">Session</text>
+      <line x1="740" y1="85" x2="760" y2="85" stroke="#fb7185" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <rect x="762" y="74" width="70" height="22" rx="4" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="797" y="89" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="JetBrains Mono,monospace">Harness</text>
+      <line x1="832" y1="85" x2="852" y2="85" stroke="#fb7185" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <rect x="854" y="74" width="70" height="22" rx="4" fill="rgba(136,19,55,0.4)" stroke="#f87171" stroke-width="1"/>
+      <text x="889" y="89" text-anchor="middle" fill="#f87171" font-size="9" font-family="JetBrains Mono,monospace">Sandbox</text>
+      <text x="795" y="118" text-anchor="middle" fill="#8b949e" font-size="9">+ Think Tool · 双层防御 · Contextual RAG</text>
+
+      <!-- Bottom comparison -->
+      <rect x="100" y="155" width="760" height="105" rx="8" fill="rgba(255,255,255,0.02)" stroke="#232836" stroke-width="1"/>
+      <text x="480" y="180" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="Noto Sans SC,sans-serif" font-weight="600">三者并非互斥 — Hermes 可作为平台调度 Codex / Claude Code</text>
+
+      <rect x="130" y="195" width="220" height="48" rx="6" fill="rgba(88,166,255,0.08)" stroke="#58a6ff" stroke-width="1"/>
+      <text x="240" y="216" text-anchor="middle" fill="#58a6ff" font-size="11" font-family="JetBrains Mono,monospace" font-weight="600">Hermes (总控)</text>
+      <text x="240" y="234" text-anchor="middle" fill="#8b949e" font-size="9">delegate_task · cronjob · terminal</text>
+
+      <line x1="350" y1="219" x2="390" y2="219" stroke="#8b949e" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <text x="370" y="212" text-anchor="middle" fill="#8b949e" font-size="8">dispatch</text>
+
+      <rect x="395" y="195" width="200" height="48" rx="6" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1"/>
+      <text x="495" y="216" text-anchor="middle" fill="#34d399" font-size="11" font-family="JetBrains Mono,monospace" font-weight="600">Codex / Claude Code</text>
+      <text x="495" y="234" text-anchor="middle" fill="#8b949e" font-size="9">专注编码 · 返回结果</text>
+
+      <line x1="595" y1="219" x2="635" y2="219" stroke="#8b949e" stroke-width="1" marker-end="url(#arrowComp)"/>
+      <text x="615" y="212" text-anchor="middle" fill="#8b949e" font-size="8">result</text>
+
+      <rect x="640" y="195" width="200" height="48" rx="6" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="740" y="216" text-anchor="middle" fill="#a78bfa" font-size="11" font-family="JetBrains Mono,monospace" font-weight="600">Skills 沉淀</text>
+      <text x="740" y="234" text-anchor="middle" fill="#8b949e" font-size="9">跨会话 · 自学习 · 可复用</text>
+    </svg>
+  </div>
+
+  <h3>6.3 七大维度横向对比</h3>
+
+  <h4>多 Agent 能力</h4>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Hermes</h4></div>
+      <p>delegate_task 子Agent（并行3个）+ kanban 多Agent任务队列 + cronjob 持久化调度。子Agent独立context和terminal。</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Codex CLI</h4></div>
+      <p><strong>原生 SpawnAgent 多Agent系统</strong> — 每个子Agent是独立 CodexThread，Alt+←→切换。Agent Graph Store (SQLite) 追踪生成关系。四种协作模板。</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot red"></div><h4>Claude Code</h4></div>
+      <p>Managed Agents + Multi-Agent Research 系统 — Lead Agent 制定策略，子Agent并行探索。内部评估：多Agent比单Agent高 <strong>90.2%</strong>。</p>
+    </div>
+  </div>
+
+  <h4>工具使用机制</h4>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Hermes</h4></div>
+      <p>25+ toolset (web/terminal/file/browser/vision/tts/memory/delegation/cronjob...)。JSON Schema function calling。MCP serve + client 完整支持。</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">独有: 跨平台消息网关 (15+平台同一Agent) · 语音STT/TTS · 智能家居</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Codex CLI</h4></div>
+      <p>OpenAI Responses API + ToolExecutor Trait。文件/Shell/Web搜索/记忆/图像/MCP/插件。<strong>生命周期Hook系统</strong> (PreToolUse/PostToolUse/SessionStart)。</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">独有: Exec-Server独立进程 · 8种Extension贡献点 · 插件市场</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot red"></div><h4>Claude Code</h4></div>
+      <p><strong>Tool Search Tool</strong>: 按需发现工具，省 <strong>95%</strong> token。<strong>Programmatic Tool Calling</strong>: Python编排工具调用。<strong>Think Tool</strong>: 生成中暂停思考。</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">独有: 工具调用准确率 72%→90% (示例驱动) · Tool Use Examples 教学</p>
+    </div>
+  </div>
+
+  <h4>上下文 / 记忆管理</h4>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Hermes</h4></div>
+      <p><strong>持久化跨会话记忆</strong> — 可插拔后端 (built-in / Honcho / Mem0)。Skills 系统实现自学习工作流保存。Curator 自动维护Skill生命周期。</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">独有: 跨平台共享记忆 (Telegram/Discord/CLI同一份) · session_search 跨会话检索</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Codex CLI</h4></div>
+      <p>多层压缩 (compact/compact_remote API)。SQLite Memory工具。项目级 <strong>AGENTS.md 层次化加载</strong> (根→叶路径)。8种Extension上下文注入点。</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">独有: 层次化AGENTS.md · WorldState贡献 · TurnInput/Lifecycle贡献</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot red"></div><h4>Claude Code</h4></div>
+      <p>Session/Context分离设计。<strong>Progressive Disclosure</strong>: 元数据(50 tokens)→指令→代码，3层按需加载。<strong>Compaction</strong> + claude-progress.txt。</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:6px;">独有: Progressive Disclosure · Git commit作为记忆 · Contextual Retrieval</p>
+    </div>
+  </div>
+
+  <h4>RAG 实现</h4>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Hermes</h4></div>
+      <p>内置 web_search + file search + 向量记忆检索。通过 Skills 可集成任意 RAG 方案 (LangChain/LlamaIndex/RAGFlow 等)，灵活可定制。</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Codex CLI</h4></div>
+      <p>工具级检索：文件搜索 + Web搜索 + Memory 检索。无内置 RAG 引擎，但可通过 MCP 和插件接入外部 RAG 系统。</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot red"></div><h4>Claude Code</h4></div>
+      <p><strong>Contextual Retrieval</strong> — 独有方案: 嵌入前为每个 chunk 自动加 50-100 token 上下文前缀。结合 BM25 + 重排序，检索失败率降低 <strong>67%</strong>。</p>
+    </div>
+  </div>
+
+  <h4>安全模型</h4>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Hermes</h4></div>
+      <p>命令审批三档 (manual/smart/off)。Secret redaction + PII redaction。Shell hooks allowlist。进程级隔离。</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot green"></div><h4>Codex CLI</h4></div>
+      <p><strong>系统级沙箱</strong>: macOS Seatbelt / Linux bubblewrap+Landlock / Windows Sandbox。Permission Profile 系统。Attestation 身份证明。</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot red"></div><h4>Claude Code</h4></div>
+      <p><strong>Auto Mode 双层防御</strong>: Prompt Injection Probe + Transcript Classifier (推理盲, FPR 0.4%)。OS 级沙箱隔离。沙箱 Bash Tool 减少 84% 权限提示。</p>
+    </div>
+  </div>
+
+  <h4>独特优势</h4>
+  <div class="card-grid">
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <div class="card-header"><div class="card-dot blue"></div><h4>Hermes — "通用 Agent 操作系统"</h4></div>
+      <p>跨 15+ 平台 · 持久记忆 · 自学习 Skills · 开源可控 · cronjob 调度 · 语音/智能家居</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">适合: 需要一个 Agent 管所有事 (代码+聊天+自动化+智能家居)</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--green);">
+      <div class="card-header"><div class="card-dot green"></div><h4>Codex CLI — "工程化多Agent工厂"</h4></div>
+      <p>Rust 高性能 · 系统级沙箱 · 原生多Agent · 插件市场 · Hook 生命周期 · $1M 开源基金</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">适合: 企业级编码, 需要多Agent并行 + 安全沙箱</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--red);">
+      <div class="card-header"><div class="card-dot red"></div><h4>Claude Code — "最会思考的编码搭档"</h4></div>
+      <p>工具调用创新最多 · 安全体系最完善 · Contextual RAG · Progressive Disclosure · Think Tool</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">适合: 复杂代码推理, 长任务自治, 安全第一的场景</p>
+    </div>
+  </div>
+
+  <h3>6.4 总评</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>维度</th><th>Hermes</th><th>Codex CLI</th><th>Claude Code</th><th>胜出</th></tr></thead>
+      <tbody>
+        <tr><td>平台覆盖</td><td class="check">★★★★★</td><td>★★★☆☆</td><td>★★★☆☆</td><td>Hermes</td></tr>
+        <tr><td>架构复杂度</td><td>★★★☆☆</td><td class="check">★★★★★</td><td>★★★★☆</td><td>Codex</td></tr>
+        <tr><td>多Agent</td><td>★★★★☆</td><td class="check">★★★★★</td><td>★★★★☆</td><td>Codex</td></tr>
+        <tr><td>工具创新</td><td>★★★☆☆</td><td>★★★★☆</td><td class="check">★★★★★</td><td>Claude Code</td></tr>
+        <tr><td>记忆持久化</td><td class="check">★★★★★</td><td>★★★☆☆</td><td>★★★★☆</td><td>Hermes</td></tr>
+        <tr><td>RAG</td><td>★★★☆☆</td><td>★★★☆☆</td><td class="check">★★★★★</td><td>Claude Code</td></tr>
+        <tr><td>安全体系</td><td>★★★☆☆</td><td>★★★★☆</td><td class="check">★★★★★</td><td>Claude Code</td></tr>
+        <tr><td>性能</td><td>★★★☆☆</td><td class="check">★★★★★</td><td>★★★★☆</td><td>Codex (Rust)</td></tr>
+        <tr><td>开源友好</td><td class="check">★★★★★</td><td class="check">★★★★★</td><td>☆☆☆☆☆</td><td>Hermes / Codex</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div> <!-- /container -->
+
+<footer class="footer">
+  <p>AI Agent 架构深度调研报告 · 2026年7月7日 · 数据来源：GitHub API + 论文 + 社区</p>
+  <p style="margin-top:4px">报告中所有 GitHub 仓库均为经 API 实时验证的活跃开源项目 | Stars 数据为近似值，以仓库实际数据为准</p>
+</footer>
+
+<!-- ═══ JS: Nav highlight ═══ -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
